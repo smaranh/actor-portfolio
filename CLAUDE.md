@@ -1,1 +1,1 @@
-Create a website for Actor's portfolio.
+@AGENTS.md
