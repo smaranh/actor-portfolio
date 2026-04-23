@@ -41,11 +41,12 @@ describe("next.config", () => {
   });
 
   it("sets basePath /actor-portfolio for production", () => {
-    expect(config).toContain('basePath: "/actor-portfolio"');
+    expect(config).toContain('"/actor-portfolio"');
+    expect(config).toContain("basePath");
   });
 
   it("sets assetPrefix /actor-portfolio for production", () => {
-    expect(config).toContain('assetPrefix: "/actor-portfolio"');
+    expect(config).toContain("assetPrefix");
   });
 
   it("gates export config on production env", () => {

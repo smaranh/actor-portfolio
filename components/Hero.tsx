@@ -3,7 +3,9 @@ export default function Hero() {
     <section
       id="hero"
       className="relative h-screen w-full bg-cover bg-center"
-      style={{ backgroundImage: "url('/images/hero.jpg')" }}
+      style={{
+        backgroundImage: `url('${process.env.NEXT_PUBLIC_BASE_PATH}/images/hero.jpg')`,
+      }}
     >
       <div className="absolute inset-0 bg-black/20" />
       <div className="absolute bottom-12 left-8 md:left-16 text-white">

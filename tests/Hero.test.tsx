@@ -24,8 +24,8 @@ describe("Hero", () => {
 
   it("uses hero.jpg as background image", () => {
     render(<Hero />);
-    const section = document.querySelector("#hero");
-    expect(section?.getAttribute("style") ?? "").toContain("hero.jpg");
+    const section = document.querySelector("#hero") as HTMLElement;
+    expect(section?.style.backgroundImage).toContain("hero.jpg");
   });
 
   it("positions text at the bottom-left", () => {
