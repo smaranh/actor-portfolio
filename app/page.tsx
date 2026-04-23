@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import ReelsPreview from "@/components/ReelsPreview";
+import Headshots from "@/components/Headshots";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
         <Hero />
         <About />
         <ReelsPreview />
+        <Headshots />
       </main>
     </>
   );
