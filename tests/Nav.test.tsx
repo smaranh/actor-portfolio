@@ -18,6 +18,31 @@ vi.mock("next/link", () => ({
   ),
 }));
 
+vi.mock("framer-motion", () => ({
+  motion: {
+    span: ({
+      children,
+      animate,
+      transition,
+      ...props
+    }: {
+      children?: React.ReactNode;
+      animate?: Record<string, unknown>;
+      transition?: Record<string, unknown>;
+      [key: string]: unknown;
+    }) => (
+      <span
+        data-animate={JSON.stringify(animate)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </span>
+    ),
+  },
+  useReducedMotion: vi.fn(() => false),
+}));
+
 describe("Nav — links", () => {
   it("renders site name linking to /#", () => {
     render(<Nav />);
@@ -265,5 +290,84 @@ describe("Nav — mobile overlay", () => {
     expect(dialog).toHaveTextContent("Reels");
     expect(dialog).toHaveTextContent("Headshots");
     expect(dialog).toHaveTextContent("Contact");
+  });
+});
+
+describe("Nav — hamburger aria + animation", () => {
+  it("hamburger has aria-expanded=false by default", () => {
+    render(<Nav />);
+    expect(screen.getByLabelText("Open menu")).toHaveAttribute(
+      "aria-expanded",
+      "false"
+    );
+  });
+
+  it("hamburger has aria-expanded=true when overlay is open", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    expect(screen.getByLabelText("Open menu")).toHaveAttribute(
+      "aria-expanded",
+      "true"
+    );
+  });
+
+  it("hamburger has aria-controls pointing to overlay id", () => {
+    render(<Nav />);
+    const hamburger = screen.getByLabelText("Open menu");
+    expect(hamburger).toHaveAttribute("aria-controls", "mobile-nav-overlay");
+  });
+
+  it("overlay has id=mobile-nav-overlay", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    expect(document.getElementById("mobile-nav-overlay")).toBeInTheDocument();
+  });
+
+  it("hamburger renders 3 bar spans", () => {
+    render(<Nav />);
+    const button = screen.getByLabelText("Open menu");
+    expect(button.querySelectorAll("span")).toHaveLength(3);
+  });
+
+  it("middle bar has opacity:0 in animate when menu is open", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    const button = screen.getByLabelText("Open menu");
+    const bars = button.querySelectorAll("span");
+    const midAnimate = JSON.parse(bars[1].getAttribute("data-animate") ?? "{}");
+    expect(midAnimate.opacity).toBe(0);
+  });
+
+  it("top bar rotates to 45deg when menu is open", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    const button = screen.getByLabelText("Open menu");
+    const bars = button.querySelectorAll("span");
+    const topAnimate = JSON.parse(bars[0].getAttribute("data-animate") ?? "{}");
+    expect(topAnimate.rotate).toBe(45);
+  });
+
+  it("bottom bar rotates to -45deg when menu is open", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    const button = screen.getByLabelText("Open menu");
+    const bars = button.querySelectorAll("span");
+    const botAnimate = JSON.parse(bars[2].getAttribute("data-animate") ?? "{}");
+    expect(botAnimate.rotate).toBe(-45);
+  });
+
+  it("reduced motion: transition duration is 0", async () => {
+    // Must mock before render so useReducedMotion() returns true at init
+    const fm = await import("framer-motion");
+    vi.mocked(fm.useReducedMotion).mockReturnValue(true);
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    const button = screen.getByLabelText("Open menu");
+    const bars = button.querySelectorAll("span");
+    const transition = JSON.parse(
+      bars[0].getAttribute("data-transition") ?? "{}"
+    );
+    expect(transition.duration).toBe(0);
+    vi.mocked(fm.useReducedMotion).mockReturnValue(false); // restore
   });
 });

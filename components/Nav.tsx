@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
 const links = [
   { label: "About Me", href: "/#about" },
@@ -14,6 +15,7 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -87,20 +89,34 @@ export default function Nav() {
           })}
         </ul>
 
-        {/* Hamburger */}
+        {/* Hamburger — stays in DOM so aria-expanded is always readable */}
         <button
           aria-label="Open menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-overlay"
           className="md:hidden flex flex-col gap-1.5 p-1"
-          onClick={() => setMenuOpen(true)}
+          onClick={() => setMenuOpen((o) => !o)}
         >
-          <span
-            className={`block w-6 h-0.5 ${scrolled ? "bg-[#222222]" : "bg-white"}`}
+          <motion.span
+            className={`block w-6 h-0.5 origin-center ${
+              scrolled ? "bg-[#222222]" : "bg-white"
+            }`}
+            animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+            transition={{ duration: reduced ? 0 : 0.3 }}
           />
-          <span
-            className={`block w-6 h-0.5 ${scrolled ? "bg-[#222222]" : "bg-white"}`}
+          <motion.span
+            className={`block w-6 h-0.5 ${
+              scrolled ? "bg-[#222222]" : "bg-white"
+            }`}
+            animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: reduced ? 0 : 0.3 }}
           />
-          <span
-            className={`block w-6 h-0.5 ${scrolled ? "bg-[#222222]" : "bg-white"}`}
+          <motion.span
+            className={`block w-6 h-0.5 origin-center ${
+              scrolled ? "bg-[#222222]" : "bg-white"
+            }`}
+            animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+            transition={{ duration: reduced ? 0 : 0.3 }}
           />
         </button>
       </nav>
@@ -108,6 +124,7 @@ export default function Nav() {
       {/* Mobile full-screen overlay */}
       {menuOpen && (
         <div
+          id="mobile-nav-overlay"
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
