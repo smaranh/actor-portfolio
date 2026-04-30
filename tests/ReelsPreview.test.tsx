@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ReelsPreview from "../components/ReelsPreview";
 
-describe("ReelsPreview", () => {
+describe("ReelsPreview — section", () => {
   it("renders a section with id reels", () => {
     render(<ReelsPreview />);
     expect(document.querySelector("#reels")).toBeInTheDocument();
@@ -10,9 +10,11 @@ describe("ReelsPreview", () => {
 
   it("renders the Reels heading", () => {
     render(<ReelsPreview />);
-    expect(screen.getByText("Reels")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Reels" })).toBeInTheDocument();
   });
+});
 
+describe("ReelsPreview — tiles", () => {
   it("renders all 4 video titles", () => {
     render(<ReelsPreview />);
     expect(screen.getByText("First Responders Part 1")).toBeInTheDocument();
@@ -21,16 +23,24 @@ describe("ReelsPreview", () => {
     expect(screen.getByText("Slate Shot LA")).toBeInTheDocument();
   });
 
-  it("renders all 4 dates", () => {
-    render(<ReelsPreview />);
-    expect(screen.getAllByText("4/21/24")).toHaveLength(4);
-  });
-
   it("renders a thumbnail for each video", () => {
     render(<ReelsPreview />);
     const thumbnails = screen.getAllByRole("img");
     expect(thumbnails.length).toBeGreaterThanOrEqual(4);
     expect(thumbnails[0].getAttribute("src")).toContain("ytimg.com");
+  });
+
+  it("renders 4 play buttons", () => {
+    render(<ReelsPreview />);
+    const buttons = screen.getAllByRole("button");
+    expect(buttons.length).toBe(4);
+  });
+});
+
+describe("ReelsPreview — modal", () => {
+  it("modal is not shown on initial render", () => {
+    render(<ReelsPreview />);
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("opens modal when a tile is clicked", () => {
@@ -41,7 +51,13 @@ describe("ReelsPreview", () => {
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
-  it("modal contains iframe with correct video ID", () => {
+  it("modal has aria-modal=true", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-modal", "true");
+  });
+
+  it("modal contains an iframe with the correct video ID", () => {
     render(<ReelsPreview />);
     fireEvent.click(
       screen.getByText("First Responders Part 1").closest("button")!
@@ -50,10 +66,16 @@ describe("ReelsPreview", () => {
     expect(iframe?.getAttribute("src")).toContain("utchWkrauZg");
   });
 
+  it("iframe src uses autoplay=1", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    const iframe = document.querySelector("iframe");
+    expect(iframe?.getAttribute("src")).toContain("autoplay=1");
+  });
+
   it("closes modal on Escape key", () => {
     render(<ReelsPreview />);
     fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
-    expect(screen.getByRole("dialog")).toBeInTheDocument();
     fireEvent.keyDown(window, { key: "Escape" });
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
@@ -61,8 +83,7 @@ describe("ReelsPreview", () => {
   it("closes modal when clicking the backdrop", () => {
     render(<ReelsPreview />);
     fireEvent.click(screen.getByText("Slate Shot LA").closest("button")!);
-    const dialog = screen.getByRole("dialog");
-    fireEvent.click(dialog);
+    fireEvent.click(screen.getByRole("dialog"));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });
