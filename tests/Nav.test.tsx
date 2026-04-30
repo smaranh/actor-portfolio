@@ -371,3 +371,34 @@ describe("Nav — hamburger aria + animation", () => {
     vi.mocked(fm.useReducedMotion).mockReturnValue(false); // restore
   });
 });
+
+describe("Nav — focus trap + Esc + focus restoration", () => {
+  it("focus moves to close button when overlay opens", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    expect(document.activeElement).toBe(screen.getByLabelText("Close menu"));
+  });
+
+  it("Escape key closes the overlay", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("focus returns to hamburger after closing via close button", () => {
+    render(<Nav />);
+    const hamburger = screen.getByLabelText("Open menu");
+    fireEvent.click(hamburger);
+    fireEvent.click(screen.getByLabelText("Close menu"));
+    expect(document.activeElement).toBe(hamburger);
+  });
+
+  it("focus returns to hamburger after closing via Escape", () => {
+    render(<Nav />);
+    const hamburger = screen.getByLabelText("Open menu");
+    fireEvent.click(hamburger);
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(document.activeElement).toBe(hamburger);
+  });
+});

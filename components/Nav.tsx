@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -16,6 +16,8 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const reduced = useReducedMotion();
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -47,6 +49,26 @@ export default function Nav() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [menuOpen]);
+
+  // Focus close button when overlay opens
+  useEffect(() => {
+    if (menuOpen) {
+      closeBtnRef.current?.focus();
+    }
+  }, [menuOpen]);
+
+  // Escape key closes overlay and restores focus
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
   return (
@@ -91,6 +113,7 @@ export default function Nav() {
 
         {/* Hamburger — stays in DOM so aria-expanded is always readable */}
         <button
+          ref={hamburgerRef}
           aria-label="Open menu"
           aria-expanded={menuOpen}
           aria-controls="mobile-nav-overlay"
@@ -131,9 +154,13 @@ export default function Nav() {
           className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center gap-10"
         >
           <button
+            ref={closeBtnRef}
             aria-label="Close menu"
             className="absolute top-5 right-6 text-3xl text-[#222222]"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false);
+              hamburgerRef.current?.focus();
+            }}
           >
             &times;
           </button>
