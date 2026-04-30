@@ -77,7 +77,7 @@ export default function Nav() {
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300 ${
           scrolled
             ? "backdrop-blur-md bg-white/70 border-b border-black/5 shadow-sm"
-            : "bg-transparent"
+            : "bg-transparent focus-ring-invert"
         }`}
       >
         <Link

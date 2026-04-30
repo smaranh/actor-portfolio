@@ -132,6 +132,22 @@ describe("Nav — scroll state", () => {
       /backdrop-blur/
     );
   });
+
+  it("applies focus-ring-invert class when transparent (not scrolled)", () => {
+    render(<Nav />);
+    expect(screen.getByRole("navigation").className).toMatch(
+      /focus-ring-invert/
+    );
+  });
+
+  it("removes focus-ring-invert class when scrolled past threshold", () => {
+    render(<Nav />);
+    Object.defineProperty(window, "scrollY", { writable: true, value: 50 });
+    fireEvent.scroll(window);
+    expect(screen.getByRole("navigation").className).not.toMatch(
+      /focus-ring-invert/
+    );
+  });
 });
 
 describe("Nav — active-section underline", () => {
