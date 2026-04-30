@@ -5,8 +5,45 @@
   --font-playfair: var(--font-playfair);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+[id] {
+  scroll-margin-top: 4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   background: #ffffff;
   color: #222222;
   font-family: var(--font-inter), sans-serif;
+}
+
+:focus-visible {
+  outline: 2px solid #222222;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Invert focus ring on dark backgrounds (hero, mobile nav overlay) */
+.focus-ring-invert :focus-visible {
+  outline-color: #ffffff;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+.font-playfair {
+  letter-spacing: -0.01em;
 }
