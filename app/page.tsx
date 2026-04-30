@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <main>
+      <main id="main" tabIndex={-1}>
         <Hero />
         <About />
         <ReelsPreview />
