@@ -34,7 +34,7 @@ _(items explicitly punted by the user; tracked here so they aren't lost)_
 
 Each phase is a standalone, shippable PR. All references like `N-01`, `H-02` map to IDs in `QA-PLAN.md`. Items marked **(pulled forward)** are lower-severity items bundled in to avoid re-editing the same file later (per D4).
 
-### Phase 1 — Foundation / cross-cutting
+### Phase 1 — Foundation / cross-cutting ✅ Done
 
 **Files:** `app/layout.tsx`, `app/globals.css`, `app/not-found.tsx` (new), `public/` (favicon stubs, og-image stub), `package.json` (Framer Motion), `components/SkipLink.tsx` (new), `components/FadeInOnScroll.tsx` (new).
 
@@ -100,7 +100,7 @@ Phase 1 is broken into **7 GitHub issues** (vertical slices). Items in the same 
 - Used by Phases 3–8.
 - IDs: G-01, G-08 enforcement.
 
-### Phase 2 — Nav (`components/Nav.tsx`)
+### Phase 2 — Nav (`components/Nav.tsx`) ✅ Done
 
 - **Bug:** raise scroll threshold to ~30px so transparent state is actually visible (N-01).
 - Glass intermediate state: `backdrop-blur-md bg-white/70` + hairline `border-b border-black/5` once scrolled (N-03).

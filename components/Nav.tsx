@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
+// "Home" link intentionally omitted per PRD — the site title
+// ("Smaran Harihar") links to /# and serves as the home nav.
 const links = [
   { label: "About Me", href: "/#about" },
   { label: "Reels", href: "/#reels" },
@@ -13,11 +16,34 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const reduced = useReducedMotion();
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 0);
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id]");
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        }
+      },
+      { threshold: 0.4, rootMargin: "-64px 0px 0px 0px" }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -27,11 +53,33 @@ export default function Nav() {
     };
   }, [menuOpen]);
 
+  // Focus close button when overlay opens
+  useEffect(() => {
+    if (menuOpen) {
+      closeBtnRef.current?.focus();
+    }
+  }, [menuOpen]);
+
+  // Escape key closes overlay and restores focus
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
   return (
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300 ${
-          scrolled ? "bg-white shadow-sm" : "bg-transparent"
+          scrolled
+            ? "backdrop-blur-md bg-white/70 border-b border-black/5 shadow-sm"
+            : "bg-transparent focus-ring-invert"
         }`}
       >
         <Link
@@ -45,34 +93,55 @@ export default function Nav() {
 
         {/* Desktop links */}
         <ul className="hidden md:flex gap-8">
-          {links.map(({ label, href }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`text-sm tracking-widest uppercase ${
-                  scrolled ? "text-[#222222]" : "text-white"
-                } hover:opacity-60 transition-opacity`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {links.map(({ label, href }) => {
+            const sectionId = href.replace("/#", "");
+            const isActive = activeSection === sectionId;
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={`text-sm tracking-widest uppercase ${
+                    scrolled ? "text-[#222222]" : "text-white"
+                  } hover:opacity-60 transition-opacity ${
+                    isActive ? "border-b-2 border-current pb-0.5" : ""
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
-        {/* Hamburger */}
+        {/* Hamburger — stays in DOM so aria-expanded is always readable */}
         <button
+          ref={hamburgerRef}
           aria-label="Open menu"
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-overlay"
           className="md:hidden flex flex-col gap-1.5 p-1"
-          onClick={() => setMenuOpen(true)}
+          onClick={() => setMenuOpen((o) => !o)}
         >
-          <span
-            className={`block w-6 h-0.5 ${scrolled ? "bg-[#222222]" : "bg-white"}`}
+          <motion.span
+            className={`block w-6 h-0.5 origin-center ${
+              scrolled ? "bg-[#222222]" : "bg-white"
+            }`}
+            animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+            transition={{ duration: reduced ? 0 : 0.3 }}
           />
-          <span
-            className={`block w-6 h-0.5 ${scrolled ? "bg-[#222222]" : "bg-white"}`}
+          <motion.span
+            className={`block w-6 h-0.5 ${
+              scrolled ? "bg-[#222222]" : "bg-white"
+            }`}
+            animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
+            transition={{ duration: reduced ? 0 : 0.3 }}
           />
-          <span
-            className={`block w-6 h-0.5 ${scrolled ? "bg-[#222222]" : "bg-white"}`}
+          <motion.span
+            className={`block w-6 h-0.5 origin-center ${
+              scrolled ? "bg-[#222222]" : "bg-white"
+            }`}
+            animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+            transition={{ duration: reduced ? 0 : 0.3 }}
           />
         </button>
       </nav>
@@ -80,15 +149,20 @@ export default function Nav() {
       {/* Mobile full-screen overlay */}
       {menuOpen && (
         <div
+          id="mobile-nav-overlay"
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
           className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center gap-10"
         >
           <button
+            ref={closeBtnRef}
             aria-label="Close menu"
             className="absolute top-5 right-6 text-3xl text-[#222222]"
-            onClick={() => setMenuOpen(false)}
+            onClick={() => {
+              setMenuOpen(false);
+              hamburgerRef.current?.focus();
+            }}
           >
             &times;
           </button>
