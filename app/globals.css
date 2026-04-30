@@ -38,3 +38,12 @@ body {
 .focus-ring-invert :focus-visible {
   outline-color: #ffffff;
 }
+
+h1,
+h2 {
+  text-wrap: balance;
+}
+
+.font-playfair {
+  letter-spacing: -0.01em;
+}

@@ -6,11 +6,13 @@ import SkipLink from "@/components/SkipLink";
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["600", "700"],
 });
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
