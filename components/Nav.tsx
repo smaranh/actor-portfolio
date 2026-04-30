@@ -13,11 +13,31 @@ const links = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 0);
+    const onScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = document.querySelectorAll("section[id]");
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        }
+      },
+      { threshold: 0.4, rootMargin: "-64px 0px 0px 0px" }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -31,7 +51,9 @@ export default function Nav() {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 transition-all duration-300 ${
-          scrolled ? "bg-white shadow-sm" : "bg-transparent"
+          scrolled
+            ? "backdrop-blur-md bg-white/70 border-b border-black/5 shadow-sm"
+            : "bg-transparent"
         }`}
       >
         <Link
@@ -45,18 +67,24 @@ export default function Nav() {
 
         {/* Desktop links */}
         <ul className="hidden md:flex gap-8">
-          {links.map(({ label, href }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className={`text-sm tracking-widest uppercase ${
-                  scrolled ? "text-[#222222]" : "text-white"
-                } hover:opacity-60 transition-opacity`}
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+          {links.map(({ label, href }) => {
+            const sectionId = href.replace("/#", "");
+            const isActive = activeSection === sectionId;
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={`text-sm tracking-widest uppercase ${
+                    scrolled ? "text-[#222222]" : "text-white"
+                  } hover:opacity-60 transition-opacity ${
+                    isActive ? "border-b-2 border-current pb-0.5" : ""
+                  }`}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Hamburger */}
