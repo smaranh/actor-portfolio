@@ -100,7 +100,7 @@ Phase 1 is broken into **7 GitHub issues** (vertical slices). Items in the same 
 - Used by Phases 3–8.
 - IDs: G-01, G-08 enforcement.
 
-### Phase 2 — Nav (`components/Nav.tsx`)
+### Phase 2 — Nav (`components/Nav.tsx`) ✅ Done
 
 - **Bug:** raise scroll threshold to ~30px so transparent state is actually visible (N-01).
 - Glass intermediate state: `backdrop-blur-md bg-white/70` + hairline `border-b border-black/5` once scrolled (N-03).
