@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
+// "Home" link intentionally omitted per PRD — the site title
+// ("Smaran Harihar") links to /# and serves as the home nav.
 const links = [
   { label: "About Me", href: "/#about" },
   { label: "Reels", href: "/#reels" },
