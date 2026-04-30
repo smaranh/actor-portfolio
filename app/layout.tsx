@@ -27,6 +27,9 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://i.ytimg.com" />
+      </head>
       <body className="min-h-full flex flex-col bg-white text-[#222222]">
         {children}
       </body>
