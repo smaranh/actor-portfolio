@@ -15,9 +15,44 @@ const inter = Inter({
   weight: ["300", "400", "500"],
 });
 
+const siteUrl = "https://trappedactor.com";
+const ogImage = `${siteUrl}/og-image.png`;
+
 export const metadata: Metadata = {
-  title: "Smaran Harihar",
-  description: "Actor, Software Engineer, and Dad.",
+  metadataBase: new URL(siteUrl),
+  title: "Smaran Harihar — Actor",
+  description:
+    "Smaran Harihar is a Los Angeles-based actor. View his reel, headshots, and credits.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "profile",
+    siteName: "Smaran Harihar",
+    title: "Smaran Harihar — Actor",
+    description:
+      "Smaran Harihar is a Los Angeles-based actor. View his reel, headshots, and credits.",
+    url: siteUrl,
+    images: [{ url: ogImage, width: 1200, height: 630, alt: "Smaran Harihar" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Smaran Harihar — Actor",
+    description:
+      "Smaran Harihar is a Los Angeles-based actor. View his reel, headshots, and credits.",
+    images: [ogImage],
+  },
+  themeColor: "#222222",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Smaran Harihar",
+  url: siteUrl,
+  jobTitle: "Actor",
+  sameAs: [
+    "https://www.imdb.com/name/nm13154667",
+    "https://www.instagram.com/trapped.actor",
+  ],
 };
 
 export default function RootLayout({
@@ -32,6 +67,10 @@ export default function RootLayout({
     >
       <head>
         <link rel="preconnect" href="https://i.ytimg.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-white text-[#222222]">
         <SkipLink />
