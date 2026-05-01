@@ -15,13 +15,13 @@ export default function Stats() {
         <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-8 text-center">
           Casting
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-gray-100 gap-y-8 md:gap-x-0 text-center">
           {stats.map(({ label, value }) => (
-            <div key={label}>
-              <p className="text-xs uppercase tracking-widest text-gray-400 mb-1">
+            <div key={label} className="md:px-4">
+              <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">
                 {label}
               </p>
-              <p className="font-playfair text-2xl font-semibold text-[#222222]">
+              <p className="font-playfair text-3xl md:text-4xl font-semibold text-[#222222]">
                 {value}
               </p>
             </div>
