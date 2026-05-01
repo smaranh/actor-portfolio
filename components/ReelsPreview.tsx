@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 
 const videos = [
-  { id: "utchWkrauZg", title: "First Responders Part 1", date: "4/21/24" },
-  { id: "Kg4OPd4saVE", title: "First Responders Part 2", date: "4/21/24" },
-  { id: "p_ZpjegmmJc", title: "Being Charlie", date: "4/21/24" },
-  { id: "ol3Y_YYAjcw", title: "Slate Shot LA", date: "4/21/24" },
+  { id: "utchWkrauZg", title: "First Responders Part 1" },
+  { id: "Kg4OPd4saVE", title: "First Responders Part 2" },
+  { id: "p_ZpjegmmJc", title: "Being Charlie" },
+  { id: "ol3Y_YYAjcw", title: "Slate Shot LA" },
 ];
 
 export default function ReelsPreview() {
@@ -54,7 +54,6 @@ export default function ReelsPreview() {
               </div>
               <div className="mt-3">
                 <p className="text-[#222222] font-medium">{v.title}</p>
-                <p className="text-sm text-gray-500 mt-0.5">{v.date}</p>
               </div>
             </button>
           ))}
