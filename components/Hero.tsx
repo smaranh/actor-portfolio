@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative h-screen w-full bg-cover bg-center"
+      className="relative h-screen w-full bg-cover bg-center md:bg-top"
       style={{
         backgroundImage: `url('${process.env.NEXT_PUBLIC_BASE_PATH}/images/hero.jpg')`,
       }}

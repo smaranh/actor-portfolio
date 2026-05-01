@@ -65,7 +65,7 @@ test.describe("Phase 2 — Issue 2: About Me hover dead zone", () => {
 });
 
 test.describe("Phase 2 — Issue 3: hero face cropping on desktop", () => {
-  test.skip("hero composition matches the desktop reference at 1440x900", async ({
+  test("hero composition matches the desktop reference at 1440x900", async ({
     page,
   }) => {
     // Skipped until the Issue 3 fix ships and the post-fix layout
