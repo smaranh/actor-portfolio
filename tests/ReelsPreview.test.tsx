@@ -1,6 +1,18 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ReelsPreview from "../components/ReelsPreview";
+
+vi.mock("next/image", () => ({
+  default: ({
+    src,
+    alt,
+    ...props
+  }: {
+    src: string;
+    alt: string;
+    [key: string]: unknown;
+  }) => <img src={src} alt={alt} {...props} />,
+}));
 
 describe("ReelsPreview — section", () => {
   it("renders a section with id reels", () => {
@@ -46,6 +58,24 @@ describe("ReelsPreview — tiles", () => {
     const thumbnails = screen.getAllByRole("img");
     expect(thumbnails.length).toBeGreaterThanOrEqual(4);
     expect(thumbnails[0].getAttribute("src")).toContain("ytimg.com");
+  });
+
+  it("thumbnails use maxresdefault as default src", () => {
+    render(<ReelsPreview />);
+    const thumbnails = screen.getAllByRole("img");
+    expect(thumbnails[0].getAttribute("src")).toContain("maxresdefault.jpg");
+  });
+
+  it("thumbnail alt matches the video title", () => {
+    render(<ReelsPreview />);
+    expect(screen.getByAltText("First Responders Part 1")).toBeInTheDocument();
+    expect(screen.getByAltText("Being Charlie")).toBeInTheDocument();
+  });
+
+  it("thumbnails use Next.js Image component (sizes prop present)", () => {
+    render(<ReelsPreview />);
+    const thumbnails = screen.getAllByRole("img");
+    expect(thumbnails[0]).toHaveAttribute("sizes");
   });
 
   it("renders 4 play buttons", () => {
