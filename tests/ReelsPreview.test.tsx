@@ -111,3 +111,25 @@ describe("ReelsPreview — modal", () => {
     expect(iframe?.title).toContain("First Responders Part 1");
   });
 });
+
+describe("ReelsPreview — scroll lock", () => {
+  it("sets body overflow hidden when modal opens", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    expect(document.body.style.overflow).toBe("hidden");
+  });
+
+  it("restores body overflow when modal closes", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(document.body.style.overflow).toBe("");
+  });
+
+  it("restores body overflow on unmount", () => {
+    const { unmount } = render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    unmount();
+    expect(document.body.style.overflow).toBe("");
+  });
+});
