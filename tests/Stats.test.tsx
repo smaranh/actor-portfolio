@@ -35,4 +35,11 @@ describe("Stats", () => {
     expect(eyebrow.className).toMatch(/uppercase/);
     expect(eyebrow.className).toMatch(/tracking-/);
   });
+
+  it("section has border-t but not border-b", () => {
+    const { container } = render(<Stats />);
+    const section = container.querySelector("#stats")!;
+    expect(section.className).toMatch(/\bborder-t\b/);
+    expect(section.className).not.toMatch(/\bborder-b\b/);
+  });
 });
