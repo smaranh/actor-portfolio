@@ -14,14 +14,16 @@ export default function About() {
           />
         </div>
         <div className="flex flex-col gap-6 text-[#222222]">
-          <p className="text-lg leading-relaxed">
-            I am an immigrant to the USA.
-          </p>
-          <p className="text-lg leading-relaxed">
-            Opportunities are all around and so are obstacles. Always try to
-            make the most of what you got and hope for the Best. That is my
-            life&apos;s motto.
-          </p>
+          <div className="max-w-prose flex flex-col gap-6">
+            <p className="text-lg leading-relaxed">
+              I am an immigrant to the USA.
+            </p>
+            <p className="text-lg leading-relaxed">
+              Opportunities are all around and so are obstacles. Always try to
+              make the most of what you got and hope for the Best. That is my
+              life&apos;s motto.
+            </p>
+          </div>
           <div className="mt-4">
             <p className="text-lg">
               <em>Much love,</em>
