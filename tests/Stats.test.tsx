@@ -18,4 +18,21 @@ describe("Stats", () => {
     expect(screen.getByText("Black")).toBeInTheDocument();
     expect(screen.getByText("Brown")).toBeInTheDocument();
   });
+
+  it("section has id='stats' for anchor navigation", () => {
+    const { container } = render(<Stats />);
+    expect(container.querySelector("#stats")).toBeInTheDocument();
+  });
+
+  it("renders eyebrow heading 'Casting' above the stats grid", () => {
+    render(<Stats />);
+    expect(screen.getByText("Casting")).toBeInTheDocument();
+  });
+
+  it("eyebrow has uppercase and tracking class", () => {
+    render(<Stats />);
+    const eyebrow = screen.getByText("Casting");
+    expect(eyebrow.className).toMatch(/uppercase/);
+    expect(eyebrow.className).toMatch(/tracking-/);
+  });
 });
