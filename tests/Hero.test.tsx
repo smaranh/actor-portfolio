@@ -8,11 +8,29 @@ describe("Hero", () => {
     expect(document.querySelector("#hero")).toBeInTheDocument();
   });
 
-  it("renders the heading", () => {
+  it("renders the heading text content", () => {
     render(<Hero />);
-    expect(
-      screen.getByText("Hey there, I’m Smaran Harihar.")
-    ).toBeInTheDocument();
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent("Hey there, I’m Smaran Harihar.");
+  });
+
+  it("splits the heading into italic and bold spans", () => {
+    render(<Hero />);
+    const h1 = screen.getByRole("heading", { level: 1 });
+    const spans = h1.querySelectorAll("span");
+    expect(spans).toHaveLength(2);
+    expect(spans[0].className).toMatch(/italic/);
+    expect(spans[0].className).toMatch(/font-normal/);
+    expect(spans[0]).toHaveTextContent("Hey there, I’m");
+    expect(spans[1].className).toMatch(/font-bold/);
+    expect(spans[1]).toHaveTextContent("Smaran Harihar.");
+  });
+
+  it("renders the eyebrow", () => {
+    render(<Hero />);
+    const eyebrow = screen.getByText("WELCOME");
+    expect(eyebrow.className).toMatch(/uppercase/);
+    expect(eyebrow.className).toMatch(/tracking-\[0\.2em\]/);
   });
 
   it("renders the subheading", () => {
@@ -30,9 +48,9 @@ describe("Hero", () => {
 
   it("positions text at the bottom-left", () => {
     render(<Hero />);
-    const textContainer = screen.getByText(
-      "Hey there, I’m Smaran Harihar."
-    ).parentElement;
+    const textContainer = screen.getByRole("heading", {
+      level: 1,
+    }).parentElement;
     expect(textContainer?.className).toMatch(/bottom/);
     expect(textContainer?.className).toMatch(/left/);
   });
