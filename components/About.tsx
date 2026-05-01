@@ -25,11 +25,11 @@ export default function About() {
             </p>
           </div>
           <div className="mt-4">
-            <p className="text-lg">
+            <p className="text-lg flex items-baseline gap-2">
               <em>Much love,</em>
-            </p>
-            <p className="font-playfair text-7xl font-semibold mt-1 text-[#222222]">
-              S
+              <span className="font-playfair text-3xl font-semibold italic text-[#222222]">
+                S
+              </span>
             </p>
           </div>
         </div>

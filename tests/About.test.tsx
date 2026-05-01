@@ -95,11 +95,22 @@ describe("About", () => {
     expect(muchLove.tagName).toBe("EM");
   });
 
-  it("renders the decorative S signature", () => {
+  it("renders Much love and S inline within a shared parent", () => {
     render(<About />);
-    expect(screen.getByText("S")).toBeInTheDocument();
+    const muchLove = screen.getByText("Much love,");
     const s = screen.getByText("S");
-    expect(s.className).toMatch(/text-/);
+    const sharedParent = muchLove.closest("p");
+    expect(sharedParent).not.toBeNull();
+    expect(sharedParent?.contains(s)).toBe(true);
+  });
+
+  it("renders the decorative S as Playfair italic and not as a text-7xl block", () => {
+    render(<About />);
+    const s = screen.getByText("S");
+    expect(s.className).toMatch(/font-playfair/);
+    expect(s.className).toMatch(/italic/);
+    expect(s.className).not.toMatch(/text-7xl/);
+    expect(s.className).not.toMatch(/\bmt-1\b/);
   });
 
   it("has a two-column layout class", () => {
