@@ -109,6 +109,45 @@ describe("Headshots", () => {
     });
   });
 
+  describe("live counter + typography (6.5 + 6.6)", () => {
+    it("counter has aria-live polite", () => {
+      render(<Headshots />);
+      const counter = document.querySelector("[aria-live]");
+      expect(counter).toHaveAttribute("aria-live", "polite");
+    });
+
+    it("counter has aria-atomic true", () => {
+      render(<Headshots />);
+      const counter = document.querySelector("[aria-live]");
+      expect(counter).toHaveAttribute("aria-atomic", "true");
+    });
+
+    it("counter has sr-only span reading Image N of M", () => {
+      render(<Headshots />);
+      expect(screen.getByText("Image 1 of 4")).toBeInTheDocument();
+    });
+
+    it("counter has aria-hidden visible span with 01 — 04 style", () => {
+      render(<Headshots />);
+      const visibleSpan = document
+        .querySelector("[aria-live]")
+        ?.querySelector("[aria-hidden='true']");
+      expect(visibleSpan?.textContent).toMatch(/01\s*—\s*04/);
+    });
+
+    it("counter has font-playfair class", () => {
+      render(<Headshots />);
+      const counter = document.querySelector("[aria-live]");
+      expect(counter?.className).toContain("font-playfair");
+    });
+
+    it("counter has text-2xl or text-xl class", () => {
+      render(<Headshots />);
+      const counter = document.querySelector("[aria-live]");
+      expect(counter?.className).toMatch(/text-(xl|2xl)/);
+    });
+  });
+
   describe("priority loading (6.2)", () => {
     it("first image (index 0) has priority", () => {
       render(<Headshots />);

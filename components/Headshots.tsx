@@ -65,8 +65,18 @@ export default function Headshots() {
             &#8594;
           </button>
         </div>
-        <p className="text-center text-sm text-gray-400 mt-4">
-          {index + 1} / {headshots.length}
+        <p
+          aria-live="polite"
+          aria-atomic="true"
+          className="text-center font-playfair text-2xl text-[#222222] mt-4"
+        >
+          <span className="sr-only">
+            Image {index + 1} of {headshots.length}
+          </span>
+          <span aria-hidden="true">
+            {String(index + 1).padStart(2, "0")} &mdash;{" "}
+            {String(headshots.length).padStart(2, "0")}
+          </span>
         </p>
       </div>
     </section>
