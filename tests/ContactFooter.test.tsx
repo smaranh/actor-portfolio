@@ -35,6 +35,20 @@ describe("Contact", () => {
     const classes = link.className.split(" ");
     expect(classes).not.toContain("underline");
   });
+
+  it("renders 'Based in Los Angeles' subtext", () => {
+    render(<Contact />);
+    expect(screen.getByText(/based in los angeles/i)).toBeInTheDocument();
+  });
+
+  it("subtext appears before the email link in the DOM", () => {
+    render(<Contact />);
+    const subtext = screen.getByText(/based in los angeles/i);
+    const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
+    expect(
+      subtext.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
 });
 
 describe("Contact — copy-to-clipboard", () => {
