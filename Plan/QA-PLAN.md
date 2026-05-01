@@ -109,7 +109,7 @@ Phase 1 is broken into **7 GitHub issues** (vertical slices). Items in the same 
 - IntersectionObserver-driven active-section underline indicator (N-08) **(pulled forward, P2)**.
 - Confirm "Home" link omission per PRD; document deviation in code comment if asked (N-02).
 
-### Phase 3 — Hero (`components/Hero.tsx`)
+### Phase 3 — Hero (`components/Hero.tsx`) ✅ Done
 
 - **Bug:** `h-screen` → `min-h-[100svh]` (H-01).
 - Migrate background `<div style backgroundImage>` → `<Image fill priority sizes="100vw" />` with overlay sibling (H-02, H-08).
