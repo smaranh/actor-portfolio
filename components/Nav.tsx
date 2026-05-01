@@ -7,10 +7,10 @@ import { motion, useReducedMotion } from "framer-motion";
 // "Home" link intentionally omitted per PRD — the site title
 // ("Smaran Harihar") links to /# and serves as the home nav.
 const links = [
-  { label: "About Me", href: "/#about" },
-  { label: "Reels", href: "/#reels" },
-  { label: "Headshots", href: "/#headshots" },
-  { label: "Contact", href: "/#contact" },
+  { label: "About Me", href: "#about" },
+  { label: "Reels", href: "#reels" },
+  { label: "Headshots", href: "#headshots" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Nav() {
@@ -83,7 +83,7 @@ export default function Nav() {
         }`}
       >
         <Link
-          href="/#"
+          href="#hero"
           className={`font-playfair text-lg font-semibold tracking-wide ${
             scrolled ? "text-[#222222]" : "text-white"
           }`}
@@ -94,7 +94,7 @@ export default function Nav() {
         {/* Desktop links */}
         <ul className="hidden md:flex gap-8">
           {links.map(({ label, href }) => {
-            const sectionId = href.replace("/#", "");
+            const sectionId = href.replace("#", "");
             const isActive = activeSection === sectionId;
             return (
               <li key={href}>
