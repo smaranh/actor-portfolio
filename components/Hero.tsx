@@ -1,12 +1,19 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[100svh] w-full bg-cover bg-center md:bg-top"
-      style={{
-        backgroundImage: `url('${process.env.NEXT_PUBLIC_BASE_PATH}/images/hero.jpg')`,
-      }}
+      className="relative min-h-[100svh] w-full overflow-hidden"
     >
+      <Image
+        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/hero.jpg`}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center md:object-top"
+      />
       <div className="absolute inset-0 bg-black/20" />
       <div className="absolute bottom-12 left-8 md:left-16 text-white">
         <p
