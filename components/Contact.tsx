@@ -18,9 +18,10 @@ export default function Contact() {
   return (
     <section id="contact" className="py-24 px-8 md:px-16 bg-white text-center">
       <div className="max-w-2xl mx-auto">
-        <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-[#222222] mb-6">
+        <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-[#222222] mb-4">
           For all bookings contact Smaran Harihar
         </h2>
+        <p className="text-sm text-gray-500 mb-6">Based in Los Angeles</p>
         <div className="flex flex-col items-center gap-3">
           <a
             href="mailto:trappedactor@gmail.com"
