@@ -12,6 +12,18 @@ describe("ReelsPreview — section", () => {
     render(<ReelsPreview />);
     expect(screen.getByRole("heading", { name: "Reels" })).toBeInTheDocument();
   });
+
+  it("renders the Selected Work eyebrow above the heading", () => {
+    render(<ReelsPreview />);
+    expect(screen.getByText(/selected work/i)).toBeInTheDocument();
+  });
+
+  it("eyebrow has uppercase and tracking classes", () => {
+    render(<ReelsPreview />);
+    const eyebrow = screen.getByText(/selected work/i);
+    expect(eyebrow.className).toMatch(/uppercase/);
+    expect(eyebrow.className).toMatch(/tracking-/);
+  });
 });
 
 describe("ReelsPreview — tiles", () => {
