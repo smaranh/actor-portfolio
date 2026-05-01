@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
@@ -34,6 +34,61 @@ describe("Contact", () => {
     const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
     const classes = link.className.split(" ");
     expect(classes).not.toContain("underline");
+  });
+});
+
+describe("Contact — copy-to-clipboard", () => {
+  beforeEach(() => {
+    Object.assign(navigator, {
+      clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+    });
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("renders a Copy email button", () => {
+    render(<Contact />);
+    expect(
+      screen.getByRole("button", { name: /copy email/i })
+    ).toBeInTheDocument();
+  });
+
+  it("clicking Copy email calls navigator.clipboard.writeText with the email", async () => {
+    render(<Contact />);
+    const button = screen.getByRole("button", { name: /copy email/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      "trappedactor@gmail.com"
+    );
+  });
+
+  it("button label flips to Copied after click", async () => {
+    render(<Contact />);
+    const button = screen.getByRole("button", { name: /copy email/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    expect(screen.getByRole("button", { name: /copied/i })).toBeInTheDocument();
+  });
+
+  it("button label resets to Copy email after 2000ms", async () => {
+    render(<Contact />);
+    const button = screen.getByRole("button", { name: /copy email/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(
+      screen.getByRole("button", { name: /copy email/i })
+    ).toBeInTheDocument();
   });
 });
 
