@@ -23,6 +23,12 @@ describe("ReelsPreview — tiles", () => {
     expect(screen.getByText("Slate Shot LA")).toBeInTheDocument();
   });
 
+  it("does not render fabricated dates on any tile", () => {
+    render(<ReelsPreview />);
+    const reels = document.querySelector("#reels")!;
+    expect(reels.textContent).not.toContain("4/21/24");
+  });
+
   it("renders a thumbnail for each video", () => {
     render(<ReelsPreview />);
     const thumbnails = screen.getAllByRole("img");
