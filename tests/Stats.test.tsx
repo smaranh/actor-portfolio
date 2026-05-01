@@ -42,4 +42,19 @@ describe("Stats", () => {
     expect(section.className).toMatch(/\bborder-t\b/);
     expect(section.className).not.toMatch(/\bborder-b\b/);
   });
+
+  it("stat values use larger Playfair display size", () => {
+    const { container } = render(<Stats />);
+    const valueEls = container.querySelectorAll(".font-playfair");
+    expect(valueEls.length).toBeGreaterThan(0);
+    valueEls.forEach((el) => {
+      expect(el.className).toMatch(/text-3xl|text-4xl/);
+    });
+  });
+
+  it("stats grid has divide-x class for hairline dividers", () => {
+    const { container } = render(<Stats />);
+    const grid = container.querySelector(".grid");
+    expect(grid?.className).toMatch(/divide-x/);
+  });
 });
