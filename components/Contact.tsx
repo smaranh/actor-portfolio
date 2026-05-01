@@ -7,7 +7,10 @@ export default function Contact() {
         </h2>
         <a
           href="mailto:trappedactor@gmail.com"
-          className="text-lg text-[#222222] underline underline-offset-4 hover:opacity-60 transition-opacity"
+          className="text-lg text-[#222222] relative bg-[length:0%_1px] bg-no-repeat bg-bottom hover:bg-[length:100%_1px] transition-all duration-300"
+          style={{
+            backgroundImage: "linear-gradient(currentColor, currentColor)",
+          }}
         >
           trappedactor@gmail.com
         </a>
