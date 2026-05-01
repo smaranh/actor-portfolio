@@ -22,7 +22,6 @@ vi.mock("next/image", () => ({
 
 vi.mock("framer-motion", () => ({
   motion: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     div: ({
       children,
       animate,
@@ -31,7 +30,8 @@ vi.mock("framer-motion", () => ({
       whileInView,
       viewport,
       ...props
-    }: any) => (
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
       <div
         data-animate={JSON.stringify(animate)}
         data-transition={JSON.stringify(transition)}

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "npm run optimize-images",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -11,7 +12,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:quarantine": "playwright test e2e/quarantine",
-    "prepare": "husky"
+    "prepare": "husky",
+    "optimize-images": "tsx scripts/optimize-images.ts"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
@@ -37,7 +39,9 @@
     "lint-staged": "^16.4.0",
     "playwright": "^1.59.1",
     "prettier": "^3.8.3",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5",
     "vitest": "^4.1.5"
   }
