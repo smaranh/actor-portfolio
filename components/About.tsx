@@ -3,6 +3,7 @@ import Image from "next/image";
 export default function About() {
   return (
     <section id="about" className="py-24 px-8 md:px-16 bg-white">
+      <h2 className="sr-only">About</h2>
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div className="relative w-full aspect-[3/4]">
           <Image

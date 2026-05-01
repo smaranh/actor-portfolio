@@ -20,6 +20,15 @@ describe("About", () => {
     expect(document.querySelector("#about")).toBeInTheDocument();
   });
 
+  it("renders a visually-hidden h2 About as the first child of the section", () => {
+    render(<About />);
+    const section = document.querySelector("#about") as HTMLElement;
+    const firstChild = section.firstElementChild as HTMLElement;
+    expect(firstChild.tagName).toBe("H2");
+    expect(firstChild).toHaveTextContent("About");
+    expect(firstChild.className).toMatch(/sr-only/);
+  });
+
   it("renders the about image", () => {
     render(<About />);
     const img = screen.getByAltText("Smaran Harihar");
