@@ -178,11 +178,11 @@ describe("Footer", () => {
     ).toContain("instagram.com/trappedactor");
   });
 
-  it("renders Twitter link", () => {
+  it("renders Twitter link pointing to x.com", () => {
     render(<Footer />);
     expect(
       screen.getByRole("link", { name: /twitter/i }).getAttribute("href")
-    ).toContain("twitter.com/TrappedActor");
+    ).toContain("x.com/TrappedActor");
   });
 
   it("does not mention Squarespace", () => {
