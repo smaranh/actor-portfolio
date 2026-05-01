@@ -92,4 +92,22 @@ describe("ReelsPreview — modal", () => {
     fireEvent.click(screen.getByRole("dialog"));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("iframe has a non-empty title attribute when modal is open", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(
+      screen.getByText("First Responders Part 1").closest("button")!
+    );
+    const iframe = document.querySelector("iframe");
+    expect(iframe?.title.length).toBeGreaterThan(0);
+  });
+
+  it("iframe title includes the video title", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(
+      screen.getByText("First Responders Part 1").closest("button")!
+    );
+    const iframe = document.querySelector("iframe");
+    expect(iframe?.title).toContain("First Responders Part 1");
+  });
 });
