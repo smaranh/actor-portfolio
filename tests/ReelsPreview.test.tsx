@@ -114,6 +114,34 @@ describe("ReelsPreview — tiles", () => {
       ).toBeInTheDocument();
     });
   });
+
+  it("play button circle has hover scale class", () => {
+    render(<ReelsPreview />);
+    const playCircle = document
+      .querySelector("button[aria-label^='Play']")!
+      .querySelector("div.rounded-full")!;
+    expect(playCircle.className).toMatch(/group-hover:scale-/);
+  });
+
+  it("play button circle has hover ring class", () => {
+    render(<ReelsPreview />);
+    const playCircle = document
+      .querySelector("button[aria-label^='Play']")!
+      .querySelector("div.rounded-full")!;
+    expect(playCircle.className).toMatch(/group-hover:ring-/);
+  });
+
+  it("thumbnail Image has hover scale class", () => {
+    render(<ReelsPreview />);
+    const thumbnail = screen.getAllByRole("img")[0];
+    expect(thumbnail.className).toMatch(/group-hover:scale-/);
+  });
+
+  it("thumbnail Image has transition class", () => {
+    render(<ReelsPreview />);
+    const thumbnail = screen.getAllByRole("img")[0];
+    expect(thumbnail.className).toMatch(/transition-/);
+  });
 });
 
 describe("ReelsPreview — modal", () => {
