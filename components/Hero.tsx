@@ -9,11 +9,18 @@ export default function Hero() {
     >
       <div className="absolute inset-0 bg-black/20" />
       <div className="absolute bottom-12 left-8 md:left-16 text-white">
+        <p
+          className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-white/80 mb-3"
+          style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}
+        >
+          WELCOME
+        </p>
         <h1
           className="font-playfair text-4xl md:text-6xl font-semibold mb-3 leading-tight"
           style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}
         >
-          Hey there, I’m Smaran Harihar.
+          <span className="italic font-normal">Hey there, I’m </span>
+          <span className="font-bold">Smaran Harihar.</span>
         </h1>
         <p
           className="text-lg md:text-2xl font-light"
