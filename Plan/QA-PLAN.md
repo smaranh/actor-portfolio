@@ -119,7 +119,7 @@ Phase 1 is broken into **7 GitHub issues** (vertical slices). Items in the same 
 - Apostrophes → real Unicode (H-07).
 - Compress `hero.jpg` (currently 550KB → target ~180KB AVIF/WebP via build-time `sharp` script in `scripts/optimize-images.ts`) (P-01).
 
-### Phase 4 — About (`components/About.tsx`)
+### Phase 4 — About (`components/About.tsx`) ✅ Done
 
 - Visually-hidden `<h2>About</h2>` for nav/SEO (A-01).
 - Image polish: subtle drop shadow + 1px warm border (A-02).
