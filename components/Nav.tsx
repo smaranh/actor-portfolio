@@ -100,7 +100,7 @@ export default function Nav() {
               <li key={href}>
                 <Link
                   href={href}
-                  className={`text-sm tracking-widest uppercase ${
+                  className={`block py-1 text-sm tracking-widest uppercase ${
                     scrolled ? "text-[#222222]" : "text-white"
                   } hover:opacity-60 transition-opacity ${
                     isActive ? "border-b-2 border-current pb-0.5" : ""
@@ -170,7 +170,7 @@ export default function Nav() {
             <Link
               key={href}
               href={href}
-              className="font-playfair text-4xl text-[#222222] hover:opacity-60 transition-opacity"
+              className="block py-1 font-playfair text-4xl text-[#222222] hover:opacity-60 transition-opacity"
               onClick={() => setMenuOpen(false)}
             >
               {label}
