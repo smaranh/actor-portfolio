@@ -7,10 +7,10 @@ import { motion, useReducedMotion } from "framer-motion";
 // "Home" link intentionally omitted per PRD — the site title
 // ("Smaran Harihar") links to /# and serves as the home nav.
 const links = [
-  { label: "About Me", href: "/#about" },
-  { label: "Reels", href: "/#reels" },
-  { label: "Headshots", href: "/#headshots" },
-  { label: "Contact", href: "/#contact" },
+  { label: "About Me", href: "#about" },
+  { label: "Reels", href: "#reels" },
+  { label: "Headshots", href: "#headshots" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Nav() {
@@ -83,7 +83,7 @@ export default function Nav() {
         }`}
       >
         <Link
-          href="/#"
+          href="#hero"
           className={`font-playfair text-lg font-semibold tracking-wide ${
             scrolled ? "text-[#222222]" : "text-white"
           }`}
@@ -94,13 +94,13 @@ export default function Nav() {
         {/* Desktop links */}
         <ul className="hidden md:flex gap-8">
           {links.map(({ label, href }) => {
-            const sectionId = href.replace("/#", "");
+            const sectionId = href.replace("#", "");
             const isActive = activeSection === sectionId;
             return (
               <li key={href}>
                 <Link
                   href={href}
-                  className={`text-sm tracking-widest uppercase ${
+                  className={`block py-1 text-sm tracking-widest uppercase ${
                     scrolled ? "text-[#222222]" : "text-white"
                   } hover:opacity-60 transition-opacity ${
                     isActive ? "border-b-2 border-current pb-0.5" : ""
@@ -170,7 +170,7 @@ export default function Nav() {
             <Link
               key={href}
               href={href}
-              className="font-playfair text-4xl text-[#222222] hover:opacity-60 transition-opacity"
+              className="block py-1 font-playfair text-4xl text-[#222222] hover:opacity-60 transition-opacity"
               onClick={() => setMenuOpen(false)}
             >
               {label}
