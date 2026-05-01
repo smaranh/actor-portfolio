@@ -1,6 +1,33 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Stats from "../components/Stats";
+
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      className,
+      initial,
+      whileInView,
+      viewport,
+      transition,
+      ...props
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
+      <div
+        className={className}
+        data-initial={JSON.stringify(initial)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: vi.fn(() => false),
+}));
 
 describe("Stats", () => {
   it("renders all four stat labels", () => {
@@ -56,5 +83,15 @@ describe("Stats", () => {
     const { container } = render(<Stats />);
     const grid = container.querySelector(".grid");
     expect(grid?.className).toMatch(/divide-x/);
+  });
+
+  it("stats content is wrapped in FadeInOnScroll", () => {
+    render(<Stats />);
+    const eyebrow = screen.getByText("Casting");
+    const fadeAncestor = eyebrow.closest("div[data-whileinview]");
+    expect(fadeAncestor).not.toBeNull();
+    expect(fadeAncestor!.getAttribute("data-whileinview")).toContain(
+      '"opacity":1'
+    );
   });
 });
