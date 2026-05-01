@@ -60,26 +60,31 @@ export default function ReelsPreview() {
         </div>
       </div>
 
-      {activeId && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-          onClick={() => setActiveId(null)}
-        >
-          <div
-            className="w-full max-w-4xl aspect-video"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <iframe
-              src={`https://www.youtube.com/embed/${activeId}?autoplay=1`}
-              className="w-full h-full"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      )}
+      {activeId &&
+        (() => {
+          const activeVideo = videos.find((v) => v.id === activeId);
+          return (
+            <div
+              role="dialog"
+              aria-modal="true"
+              className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+              onClick={() => setActiveId(null)}
+            >
+              <div
+                className="w-full max-w-4xl aspect-video"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <iframe
+                  src={`https://www.youtube.com/embed/${activeId}?autoplay=1`}
+                  title={`${activeVideo?.title} (YouTube video)`}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          );
+        })()}
     </section>
   );
 }
