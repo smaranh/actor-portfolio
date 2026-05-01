@@ -5,6 +5,8 @@ description: Test-driven development with red-green-refactor loop. Use when user
 
 # Test-Driven Development
 
+> **For real-browser behavior** — layout, scroll, animation, hover, focus, computed CSS — see [`/e2e`](../e2e/SKILL.md). The `/tdd` skill covers component logic via Vitest (jsdom). The two skills complement each other; run both for any UI feature.
+
 ## Philosophy
 
 **Core principle**: Tests should verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't.
