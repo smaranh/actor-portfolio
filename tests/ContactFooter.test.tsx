@@ -1,7 +1,34 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      className,
+      initial,
+      whileInView,
+      viewport,
+      transition,
+      ...props
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
+      <div
+        className={className}
+        data-initial={JSON.stringify(initial)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: () => false,
+}));
 
 describe("Contact", () => {
   it("renders a section with id contact", () => {
@@ -20,6 +47,99 @@ describe("Contact", () => {
     render(<Contact />);
     const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
     expect(link).toHaveAttribute("href", "mailto:trappedactor@gmail.com");
+  });
+
+  it("mailto link uses animated underline gradient background classes", () => {
+    render(<Contact />);
+    const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
+    expect(link.className).toContain("bg-[length:0%_1px]");
+    expect(link.className).toContain("hover:bg-[length:100%_1px]");
+  });
+
+  it("mailto link does not use static underline utility class", () => {
+    render(<Contact />);
+    const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
+    const classes = link.className.split(" ");
+    expect(classes).not.toContain("underline");
+  });
+
+  it("renders 'Based in Los Angeles' subtext", () => {
+    render(<Contact />);
+    expect(screen.getByText(/based in los angeles/i)).toBeInTheDocument();
+  });
+
+  it("subtext appears before the email link in the DOM", () => {
+    render(<Contact />);
+    const subtext = screen.getByText(/based in los angeles/i);
+    const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
+    expect(
+      subtext.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it("section content is wrapped in FadeInOnScroll", () => {
+    render(<Contact />);
+    const heading = screen.getByText("For all bookings contact Smaran Harihar");
+    const fadeAncestor = heading.closest("div[data-whileinview]");
+    expect(fadeAncestor).not.toBeNull();
+    expect(fadeAncestor!.getAttribute("data-whileinview")).toContain(
+      '"opacity":1'
+    );
+  });
+});
+
+describe("Contact — copy-to-clipboard", () => {
+  beforeEach(() => {
+    Object.assign(navigator, {
+      clipboard: { writeText: vi.fn().mockResolvedValue(undefined) },
+    });
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
+  it("renders a Copy email button", () => {
+    render(<Contact />);
+    expect(
+      screen.getByRole("button", { name: /copy email/i })
+    ).toBeInTheDocument();
+  });
+
+  it("clicking Copy email calls navigator.clipboard.writeText with the email", async () => {
+    render(<Contact />);
+    const button = screen.getByRole("button", { name: /copy email/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      "trappedactor@gmail.com"
+    );
+  });
+
+  it("button label flips to Copied after click", async () => {
+    render(<Contact />);
+    const button = screen.getByRole("button", { name: /copy email/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    expect(screen.getByRole("button", { name: /copied/i })).toBeInTheDocument();
+  });
+
+  it("button label resets to Copy email after 2000ms", async () => {
+    render(<Contact />);
+    const button = screen.getByRole("button", { name: /copy email/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(
+      screen.getByRole("button", { name: /copy email/i })
+    ).toBeInTheDocument();
   });
 });
 
