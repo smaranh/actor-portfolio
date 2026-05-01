@@ -1,6 +1,37 @@
+import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Headshots from "../components/Headshots";
+
+const mockUseReducedMotion = vi.fn(() => false);
+
+vi.mock("framer-motion", () => ({
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  ),
+  motion: {
+    div: ({
+      children,
+      animate,
+      transition,
+      initial,
+      exit,
+      ...props
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
+      <div
+        data-animate={JSON.stringify(animate)}
+        data-transition={JSON.stringify(transition)}
+        data-initial={JSON.stringify(initial)}
+        data-exit={JSON.stringify(exit)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: () => mockUseReducedMotion(),
+}));
 
 vi.mock("next/image", () => ({
   default: ({
@@ -106,6 +137,32 @@ describe("Headshots", () => {
       expect(screen.getByRole("img").getAttribute("src")).toContain(
         "headshot-1"
       );
+    });
+  });
+
+  describe("AnimatePresence crossfade (6.1)", () => {
+    it("renders a motion wrapper around the image", () => {
+      render(<Headshots />);
+      const wrapper = document.querySelector("[data-animate]");
+      expect(wrapper).toBeInTheDocument();
+    });
+
+    it("motion wrapper has opacity 1 animate target", () => {
+      render(<Headshots />);
+      const wrapper = document.querySelector("[data-animate]");
+      expect(JSON.parse(wrapper!.getAttribute("data-animate")!)).toMatchObject({
+        opacity: 1,
+      });
+    });
+
+    it("reduced motion: transition duration is 0", () => {
+      mockUseReducedMotion.mockReturnValue(true);
+      render(<Headshots />);
+      const wrapper = document.querySelector("[data-transition]");
+      expect(
+        JSON.parse(wrapper!.getAttribute("data-transition")!).duration
+      ).toBe(0);
+      mockUseReducedMotion.mockReturnValue(false);
     });
   });
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 const headshots = [
   { src: "/images/headshot-1.jpg", alt: "Headshot 1" },
@@ -13,6 +14,7 @@ const headshots = [
 export default function Headshots() {
   const [index, setIndex] = useState(0);
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  const reduce = useReducedMotion();
 
   const prev = () =>
     setIndex((i) => (i - 1 + headshots.length) % headshots.length);
@@ -48,15 +50,25 @@ export default function Headshots() {
           >
             &#8592;
           </button>
-          <div className="relative w-full max-w-2xl aspect-[3/4]">
-            <Image
-              src={`${base}${headshots[index].src}`}
-              alt={headshots[index].alt}
-              fill
-              className="object-cover"
-              priority={index === 0}
-            />
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: reduce ? 1 : 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: reduce ? 1 : 0 }}
+              transition={{ duration: reduce ? 0 : 0.3 }}
+              className="relative w-full max-w-2xl aspect-[3/4]"
+            >
+              <Image
+                src={`${base}${headshots[index].src}`}
+                alt={headshots[index].alt}
+                fill
+                sizes="(max-width: 1024px) 100vw, 672px"
+                className="object-cover"
+                priority={index === 0}
+              />
+            </motion.div>
+          </AnimatePresence>
           <button
             aria-label="Next headshot"
             onClick={next}
