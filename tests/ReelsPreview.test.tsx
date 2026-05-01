@@ -14,6 +14,33 @@ vi.mock("next/image", () => ({
   }) => <img src={src} alt={alt} {...props} />,
 }));
 
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      className,
+      initial,
+      whileInView,
+      viewport,
+      transition,
+      ...props
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
+      <div
+        className={className}
+        data-initial={JSON.stringify(initial)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: () => false,
+}));
+
 describe("ReelsPreview — section", () => {
   it("renders a section with id reels", () => {
     render(<ReelsPreview />);
@@ -35,6 +62,16 @@ describe("ReelsPreview — section", () => {
     const eyebrow = screen.getByText(/selected work/i);
     expect(eyebrow.className).toMatch(/uppercase/);
     expect(eyebrow.className).toMatch(/tracking-/);
+  });
+
+  it("inner content is wrapped in FadeInOnScroll", () => {
+    render(<ReelsPreview />);
+    const heading = screen.getByRole("heading", { name: "Reels" });
+    const fadeAncestor = heading.closest("div[data-whileinview]");
+    expect(fadeAncestor).not.toBeNull();
+    expect(fadeAncestor!.getAttribute("data-whileinview")).toContain(
+      '"opacity":1'
+    );
   });
 });
 
