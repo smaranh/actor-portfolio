@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const headshots = [
@@ -17,6 +17,22 @@ export default function Headshots() {
   const prev = () =>
     setIndex((i) => (i - 1 + headshots.length) % headshots.length);
   const next = () => setIndex((i) => (i + 1) % headshots.length);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement
+      )
+        return;
+      if (e.key === "ArrowLeft")
+        setIndex((i) => (i - 1 + headshots.length) % headshots.length);
+      else if (e.key === "ArrowRight")
+        setIndex((i) => (i + 1) % headshots.length);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <section id="headshots" className="py-24 px-8 md:px-16 bg-white">
