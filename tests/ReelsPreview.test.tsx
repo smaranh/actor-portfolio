@@ -155,6 +155,38 @@ describe("ReelsPreview — modal", () => {
   });
 });
 
+describe("ReelsPreview — close button", () => {
+  it("close button renders when modal is open", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    expect(
+      screen.getByRole("button", { name: /close video/i })
+    ).toBeInTheDocument();
+  });
+
+  it("close button is not in the DOM when modal is closed", () => {
+    render(<ReelsPreview />);
+    expect(
+      screen.queryByRole("button", { name: /close video/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it("clicking close button dismisses the modal", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    fireEvent.click(screen.getByRole("button", { name: /close video/i }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("close button has aria-label Close video", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    expect(
+      screen.getByRole("button", { name: /close video/i })
+    ).toHaveAttribute("aria-label", "Close video");
+  });
+});
+
 describe("ReelsPreview — scroll lock", () => {
   it("sets body overflow hidden when modal opens", () => {
     render(<ReelsPreview />);
