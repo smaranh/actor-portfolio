@@ -14,7 +14,7 @@ export default function Hero() {
         sizes="100vw"
         className="object-cover object-center md:object-top"
       />
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       <div className="absolute bottom-12 left-8 md:left-16 text-white">
         <p
           className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-white/80 mb-3"

@@ -86,4 +86,19 @@ describe("Hero", () => {
     expect(section.className).not.toMatch(/\bh-screen\b/);
     expect(section.className).toMatch(/w-full/);
   });
+  it("renders a vertical gradient overlay", () => {
+    render(<Hero />);
+    // The overlay is the first div sibling after the Next Image (which is the first child if not counting style tags Next.js might inject, but let's select by absolute inset-0)
+    // Actually, we can just find the div with absolute and inset-0
+    const section = document.querySelector("#hero") as HTMLElement;
+    const overlay = section.querySelector(
+      "div.absolute.inset-0"
+    ) as HTMLElement;
+    expect(overlay).toBeInTheDocument();
+    expect(overlay.className).not.toMatch(/bg-black\/20\b/);
+    expect(overlay.className).toMatch(/bg-gradient-to-t/);
+    expect(overlay.className).toMatch(/from-black\/60/);
+    expect(overlay.className).toMatch(/via-black\/20/);
+    expect(overlay.className).toMatch(/to-transparent/);
+  });
 });
