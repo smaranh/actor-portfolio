@@ -29,16 +29,18 @@ describe("About", () => {
     expect(firstChild.className).toMatch(/sr-only/);
   });
 
-  it("renders the about image", () => {
+  it("renders the about image with descriptive alt text", () => {
     render(<About />);
-    const img = screen.getByAltText("Smaran Harihar");
+    const img = screen.getByAltText(/Smaran/);
     expect(img).toBeInTheDocument();
     expect(img.getAttribute("src")).toContain("about.jpg");
+    const alt = img.getAttribute("alt") ?? "";
+    expect(alt.length).toBeGreaterThan(20);
   });
 
   it("portrait wrapper has shadow, warm border, and preserved aspect ratio", () => {
     render(<About />);
-    const img = screen.getByAltText("Smaran Harihar");
+    const img = screen.getByAltText(/Smaran/);
     const wrapper = img.parentElement as HTMLElement;
     expect(wrapper.className).toMatch(/shadow-/);
     expect(wrapper.className).toMatch(/ring-1|border\b/);
