@@ -38,7 +38,7 @@ export default function Headshots() {
               alt={headshots[index].alt}
               fill
               className="object-cover"
-              priority
+              priority={index === 0}
             />
           </div>
           <button

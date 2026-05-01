@@ -6,12 +6,21 @@ vi.mock("next/image", () => ({
   default: ({
     src,
     alt,
+    priority,
     ...props
   }: {
     src: string;
     alt: string;
+    priority?: boolean;
     [key: string]: unknown;
-  }) => <img src={src} alt={alt} {...props} />,
+  }) => (
+    <img
+      src={src}
+      alt={alt}
+      data-priority={priority ? "true" : undefined}
+      {...props}
+    />
+  ),
 }));
 
 describe("Headshots", () => {
@@ -60,5 +69,20 @@ describe("Headshots", () => {
     render(<Headshots />);
     expect(screen.getByLabelText("Previous headshot")).toBeInTheDocument();
     expect(screen.getByLabelText("Next headshot")).toBeInTheDocument();
+  });
+
+  describe("priority loading (6.2)", () => {
+    it("first image (index 0) has priority", () => {
+      render(<Headshots />);
+      const img = screen.getByRole("img");
+      expect(img).toHaveAttribute("data-priority", "true");
+    });
+
+    it("subsequent images do not have priority", () => {
+      render(<Headshots />);
+      fireEvent.click(screen.getByLabelText("Next headshot"));
+      const img = screen.getByRole("img");
+      expect(img).not.toHaveAttribute("data-priority");
+    });
   });
 });
