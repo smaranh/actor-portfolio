@@ -84,6 +84,17 @@ export default function ReelsPreview() {
               className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
               onClick={() => setActiveId(null)}
             >
+              <button
+                type="button"
+                aria-label="Close video"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveId(null);
+                }}
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-[#222222] flex items-center justify-center text-xl"
+              >
+                ×
+              </button>
               <div
                 className="w-full max-w-4xl aspect-video"
                 onClick={(e) => e.stopPropagation()}
