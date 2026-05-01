@@ -23,11 +23,21 @@ vi.mock("next/image", () => ({
 vi.mock("framer-motion", () => ({
   motion: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    div: ({ children, animate, transition, initial, ...props }: any) => (
+    div: ({
+      children,
+      animate,
+      transition,
+      initial,
+      whileInView,
+      viewport,
+      ...props
+    }: any) => (
       <div
         data-animate={JSON.stringify(animate)}
         data-transition={JSON.stringify(transition)}
         data-initial={JSON.stringify(initial)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
         {...props}
       >
         {children}
@@ -150,5 +160,20 @@ describe("Hero", () => {
 
     expect(motionWrapper.dataset.animate).toContain('"scale":1');
     expect(motionWrapper.dataset.transition).toContain('"duration":0');
+  });
+  it("wraps the text block in FadeInOnScroll", () => {
+    render(<Hero />);
+    const heading = screen.getByRole("heading", { level: 1 });
+    // Find the motion.div from FadeInOnScroll wrapping the heading container
+    // We can look for data-whileinview attribute which FadeInOnScroll sets
+    const fadeWrapper = heading.closest("div[data-whileinview]");
+    expect(fadeWrapper).toBeInTheDocument();
+    expect(fadeWrapper?.getAttribute("data-whileinview")).toContain(
+      '"opacity":1'
+    );
+    expect(fadeWrapper?.getAttribute("data-whileinview")).toContain('"y":0');
+    // Ensure the positioning class absolute is on the wrapper
+    expect(fadeWrapper?.className).toMatch(/absolute/);
+    expect(fadeWrapper?.className).toMatch(/bottom-12/);
   });
 });
