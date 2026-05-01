@@ -46,9 +46,21 @@ export default function Headshots() {
           <button
             aria-label="Previous headshot"
             onClick={prev}
-            className="flex-shrink-0 w-10 h-10 flex items-center justify-center border border-[#222222] hover:bg-[#222222] hover:text-white transition-colors"
+            className="flex-shrink-0 w-12 h-12 rounded-full border border-[#222222] flex items-center justify-center hover:bg-[#222222] hover:text-white hover:-translate-y-0.5 transition-all"
           >
-            &#8592;
+            <svg
+              aria-hidden="true"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
           </button>
           <AnimatePresence mode="wait">
             <motion.div
@@ -72,9 +84,21 @@ export default function Headshots() {
           <button
             aria-label="Next headshot"
             onClick={next}
-            className="flex-shrink-0 w-10 h-10 flex items-center justify-center border border-[#222222] hover:bg-[#222222] hover:text-white transition-colors"
+            className="flex-shrink-0 w-12 h-12 rounded-full border border-[#222222] flex items-center justify-center hover:bg-[#222222] hover:text-white hover:-translate-y-0.5 transition-all"
           >
-            &#8594;
+            <svg
+              aria-hidden="true"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
           </button>
         </div>
         <p
