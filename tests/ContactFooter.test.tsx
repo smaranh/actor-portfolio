@@ -235,6 +235,26 @@ describe("Footer", () => {
     });
   });
 
+  it("renders a copyright line with the current year and author name", () => {
+    render(<Footer />);
+    const year = new Date().getFullYear();
+    expect(
+      screen.getByText(new RegExp(`© ${year} Smaran Harihar`))
+    ).toBeInTheDocument();
+  });
+
+  it("renders a Back to top link with href #hero", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /back to top/i });
+    expect(link).toHaveAttribute("href", "#hero");
+  });
+
+  it("Back to top link text includes an up-arrow indicator", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /back to top/i });
+    expect(link.textContent).toMatch(/↑|↗|⬆/);
+  });
+
   it("all social links open in new tab", () => {
     render(<Footer />);
     const socialLinks = ["imdb", "youtube", "facebook", "instagram", "twitter"];
