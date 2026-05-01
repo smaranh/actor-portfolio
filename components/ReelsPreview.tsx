@@ -21,6 +21,15 @@ export default function ReelsPreview() {
     return () => window.removeEventListener("keydown", onKey);
   }, [activeId]);
 
+  useEffect(() => {
+    if (!activeId) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [activeId]);
+
   return (
     <section id="reels" className="py-24 px-8 md:px-16 bg-white">
       <div className="max-w-6xl mx-auto">
