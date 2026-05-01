@@ -231,6 +231,32 @@ describe("ReelsPreview — modal", () => {
   });
 });
 
+describe("ReelsPreview — modal focus and aria", () => {
+  it("dialog has aria-label containing the video title", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.getAttribute("aria-label")).toContain("Being Charlie");
+  });
+
+  it("focus moves to the close button when modal opens", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    const closeBtn = screen.getByRole("button", { name: /close video/i });
+    expect(document.activeElement).toBe(closeBtn);
+  });
+
+  it("focus returns to the tile that opened the modal after Escape", () => {
+    render(<ReelsPreview />);
+    const tileBtn = screen.getByRole("button", {
+      name: /play being charlie/i,
+    });
+    fireEvent.click(tileBtn);
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(document.activeElement).toBe(tileBtn);
+  });
+});
+
 describe("ReelsPreview — close button", () => {
   it("close button renders when modal is open", () => {
     render(<ReelsPreview />);
