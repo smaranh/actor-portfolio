@@ -60,6 +60,33 @@ describe("About", () => {
     ).toBeInTheDocument();
   });
 
+  it("constrains body paragraphs by max-w-prose, but not the signature block", () => {
+    render(<About />);
+    const firstPara = screen.getByText("I am an immigrant to the USA.");
+    let node: HTMLElement | null = firstPara.parentElement;
+    let foundProseAncestor = false;
+    while (node) {
+      if (/max-w-prose/.test(node.className)) {
+        foundProseAncestor = true;
+        break;
+      }
+      node = node.parentElement;
+    }
+    expect(foundProseAncestor).toBe(true);
+
+    const muchLove = screen.getByText("Much love,");
+    let signatureNode: HTMLElement | null = muchLove.parentElement;
+    let signatureInsideProse = false;
+    while (signatureNode) {
+      if (/max-w-prose/.test(signatureNode.className)) {
+        signatureInsideProse = true;
+        break;
+      }
+      signatureNode = signatureNode.parentElement;
+    }
+    expect(signatureInsideProse).toBe(false);
+  });
+
   it("renders Much love in italic", () => {
     render(<About />);
     const muchLove = screen.getByText("Much love,");
