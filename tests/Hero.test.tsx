@@ -36,4 +36,12 @@ describe("Hero", () => {
     expect(textContainer?.className).toMatch(/bottom/);
     expect(textContainer?.className).toMatch(/left/);
   });
+
+  it("uses min-h-[100svh] and w-full for layout", () => {
+    render(<Hero />);
+    const section = document.querySelector("#hero") as HTMLElement;
+    expect(section.className).toMatch(/min-h-\[100svh\]/);
+    expect(section.className).not.toMatch(/\bh-screen\b/);
+    expect(section.className).toMatch(/w-full/);
+  });
 });
