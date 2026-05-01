@@ -294,6 +294,35 @@ describe("ReelsPreview — modal focus and aria", () => {
   });
 });
 
+describe("ReelsPreview — Esc then re-open", () => {
+  it("opens a clean modal for a different tile after Esc closes the first", () => {
+    render(<ReelsPreview />);
+    // Open first tile
+    const firstTile = screen.getByRole("button", {
+      name: /play first responders part 1/i,
+    });
+    fireEvent.click(firstTile);
+    const iframe1 = document.querySelector("iframe");
+    expect(iframe1?.getAttribute("src")).toContain("utchWkrauZg");
+    // Close with Esc
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    // Open a different tile
+    fireEvent.click(
+      screen.getByRole("button", { name: /play being charlie/i })
+    );
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+    // Confirm the iframe now shows the Being Charlie video id
+    const iframe2 = document.querySelector("iframe");
+    expect(iframe2?.getAttribute("src")).not.toContain("utchWkrauZg");
+    // Focus should be on the new close button
+    expect(document.activeElement).toBe(
+      screen.getByRole("button", { name: /close video/i })
+    );
+  });
+});
+
 describe("ReelsPreview — close button", () => {
   it("close button renders when modal is open", () => {
     render(<ReelsPreview />);
