@@ -41,6 +41,37 @@ describe("ReelsPreview — tiles", () => {
     const buttons = screen.getAllByRole("button");
     expect(buttons.length).toBe(4);
   });
+
+  it("play SVG has aria-hidden=true", () => {
+    render(<ReelsPreview />);
+    const svgs = document.querySelectorAll("svg");
+    expect(svgs.length).toBeGreaterThan(0);
+    svgs.forEach((svg) => {
+      expect(svg.getAttribute("aria-hidden")).toBe("true");
+    });
+  });
+
+  it("tile buttons have descriptive aria-label", () => {
+    render(<ReelsPreview />);
+    expect(
+      screen.getByRole("button", { name: /play first responders part 1/i })
+    ).toBeInTheDocument();
+  });
+
+  it("each tile button aria-label includes the video title", () => {
+    render(<ReelsPreview />);
+    const videoTitles = [
+      "First Responders Part 1",
+      "First Responders Part 2",
+      "Being Charlie",
+      "Slate Shot LA",
+    ];
+    videoTitles.forEach((title) => {
+      expect(
+        screen.getByRole("button", { name: new RegExp(`play ${title}`, "i") })
+      ).toBeInTheDocument();
+    });
+  });
 });
 
 describe("ReelsPreview — modal", () => {
