@@ -1,19 +1,31 @@
+"use client";
+
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 
 export default function Hero() {
+  const reduce = useReducedMotion();
+
   return (
     <section
       id="hero"
       className="relative min-h-[100svh] w-full overflow-hidden"
     >
-      <Image
-        src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/hero.jpg`}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-center md:object-top"
-      />
+      <motion.div
+        className="absolute inset-0"
+        initial={{ scale: 1 }}
+        animate={{ scale: reduce ? 1 : 1.05 }}
+        transition={{ duration: reduce ? 0 : 20, ease: "easeOut" }}
+      >
+        <Image
+          src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/hero.jpg`}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center md:object-top"
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       <div className="absolute bottom-12 left-8 md:left-16 text-white">
         <p

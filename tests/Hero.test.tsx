@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { useReducedMotion } from "framer-motion";
 import Hero from "../components/Hero";
 
 vi.mock("next/image", () => ({
@@ -17,6 +18,23 @@ vi.mock("next/image", () => ({
       {...rest}
     />
   ),
+}));
+
+vi.mock("framer-motion", () => ({
+  motion: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    div: ({ children, animate, transition, initial, ...props }: any) => (
+      <div
+        data-animate={JSON.stringify(animate)}
+        data-transition={JSON.stringify(transition)}
+        data-initial={JSON.stringify(initial)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: vi.fn(() => false),
 }));
 
 describe("Hero", () => {
@@ -91,14 +109,46 @@ describe("Hero", () => {
     // The overlay is the first div sibling after the Next Image (which is the first child if not counting style tags Next.js might inject, but let's select by absolute inset-0)
     // Actually, we can just find the div with absolute and inset-0
     const section = document.querySelector("#hero") as HTMLElement;
-    const overlay = section.querySelector(
-      "div.absolute.inset-0"
+    // The overlay should be the div that contains the gradient class
+    const overlays = section.querySelectorAll("div.absolute.inset-0");
+    const overlay = Array.from(overlays).find((el) =>
+      el.className.includes("bg-gradient-to-t")
     ) as HTMLElement;
+
     expect(overlay).toBeInTheDocument();
     expect(overlay.className).not.toMatch(/bg-black\/20\b/);
     expect(overlay.className).toMatch(/bg-gradient-to-t/);
     expect(overlay.className).toMatch(/from-black\/60/);
     expect(overlay.className).toMatch(/via-black\/20/);
     expect(overlay.className).toMatch(/to-transparent/);
+  });
+
+  it("wraps image in a motion element with Ken-Burns scale animation", () => {
+    // Reset mock to ensure default motion
+    vi.mocked(useReducedMotion).mockReturnValue(false);
+
+    render(<Hero />);
+    const section = document.querySelector("#hero") as HTMLElement;
+    // Find the motion wrapper inside the section
+    const motionWrapper = section.querySelector(
+      "div[data-animate]"
+    ) as HTMLElement;
+    expect(motionWrapper).toBeInTheDocument();
+
+    expect(motionWrapper.dataset.animate).toContain('"scale":1.05');
+    expect(motionWrapper.dataset.transition).toContain('"duration":20');
+  });
+
+  it("skips Ken-Burns zoom if reduced motion is enabled", () => {
+    vi.mocked(useReducedMotion).mockReturnValue(true);
+
+    render(<Hero />);
+    const section = document.querySelector("#hero") as HTMLElement;
+    const motionWrapper = section.querySelector(
+      "div[data-animate]"
+    ) as HTMLElement;
+
+    expect(motionWrapper.dataset.animate).toContain('"scale":1');
+    expect(motionWrapper.dataset.transition).toContain('"duration":0');
   });
 });
