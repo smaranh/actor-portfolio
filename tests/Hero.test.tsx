@@ -1,6 +1,23 @@
 import { describe, it, expect } from "vitest";
+import { vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Hero from "../components/Hero";
+
+vi.mock("next/image", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  default: ({ src, alt, fill, priority, sizes, className, ...rest }: any) => (
+    <img
+      src={typeof src === "string" ? src : src.src}
+      alt={alt}
+      data-fill={fill ? "true" : undefined}
+      data-priority={priority ? "true" : undefined}
+      data-sizes={sizes}
+      className={className}
+      loading={priority ? "eager" : "lazy"}
+      {...rest}
+    />
+  ),
+}));
 
 describe("Hero", () => {
   it("renders a section with id hero", () => {
@@ -40,10 +57,17 @@ describe("Hero", () => {
     ).toBeInTheDocument();
   });
 
-  it("uses hero.jpg as background image", () => {
+  it("uses Next Image with hero.jpg", () => {
     render(<Hero />);
+    const img = document.querySelector("#hero img") as HTMLImageElement;
+    expect(img).toBeInTheDocument();
+    expect(img.src + (img.srcset ?? "")).toContain("hero.jpg");
+    expect(img.dataset.fill).toBe("true");
+    expect(img.dataset.priority).toBe("true");
+    expect(img.alt).toBe("");
+
     const section = document.querySelector("#hero") as HTMLElement;
-    expect(section?.style.backgroundImage).toContain("hero.jpg");
+    expect(section.className).toMatch(/overflow-hidden/);
   });
 
   it("positions text at the bottom-left", () => {
