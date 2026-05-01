@@ -190,6 +190,51 @@ describe("Footer", () => {
     expect(screen.queryByText(/squarespace/i)).not.toBeInTheDocument();
   });
 
+  it("IMDB link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /imdb/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("YouTube link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /youtube/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("Facebook link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /facebook/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("Instagram link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /instagram/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("Twitter link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /twitter/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("social link SVG icons are aria-hidden", () => {
+    render(<Footer />);
+    const platforms = ["imdb", "youtube", "facebook", "instagram", "twitter"];
+    platforms.forEach((name) => {
+      const link = screen.getByRole("link", { name: new RegExp(name, "i") });
+      const svg = link.querySelector("svg");
+      expect(svg?.getAttribute("aria-hidden")).toBe("true");
+    });
+  });
+
   it("all social links open in new tab", () => {
     render(<Footer />);
     const socialLinks = ["imdb", "youtube", "facebook", "instagram", "twitter"];
