@@ -140,6 +140,54 @@ describe("Headshots", () => {
     });
   });
 
+  describe("round chevron buttons (6.7 + 6.3)", () => {
+    it("prev button contains an SVG with aria-hidden true", () => {
+      render(<Headshots />);
+      const prevBtn = screen.getByLabelText("Previous headshot");
+      const svg = prevBtn.querySelector("svg");
+      expect(svg).toBeInTheDocument();
+      expect(svg).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("next button contains an SVG with aria-hidden true", () => {
+      render(<Headshots />);
+      const nextBtn = screen.getByLabelText("Next headshot");
+      const svg = nextBtn.querySelector("svg");
+      expect(svg).toBeInTheDocument();
+      expect(svg).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("both buttons have rounded-full class", () => {
+      render(<Headshots />);
+      expect(screen.getByLabelText("Previous headshot").className).toContain(
+        "rounded-full"
+      );
+      expect(screen.getByLabelText("Next headshot").className).toContain(
+        "rounded-full"
+      );
+    });
+
+    it("both buttons have hover lift class", () => {
+      render(<Headshots />);
+      expect(screen.getByLabelText("Previous headshot").className).toContain(
+        "-translate-y-0.5"
+      );
+      expect(screen.getByLabelText("Next headshot").className).toContain(
+        "-translate-y-0.5"
+      );
+    });
+
+    it("button accessible names are preserved", () => {
+      render(<Headshots />);
+      expect(
+        screen.getByRole("button", { name: /previous headshot/i })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /next headshot/i })
+      ).toBeInTheDocument();
+    });
+  });
+
   describe("AnimatePresence crossfade (6.1)", () => {
     it("renders a motion wrapper around the image", () => {
       render(<Headshots />);
