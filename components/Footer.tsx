@@ -6,7 +6,7 @@ const socials = [
   },
   { label: "Facebook", href: "https://www.facebook.com/trappedactor/" },
   { label: "Instagram", href: "https://www.instagram.com/trappedactor/" },
-  { label: "Twitter", href: "https://twitter.com/TrappedActor" },
+  { label: "Twitter", href: "https://x.com/TrappedActor" },
 ];
 
 export default function Footer() {
