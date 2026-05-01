@@ -13,6 +13,7 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
 });
 
 const siteUrl = "https://trappedactor.com";

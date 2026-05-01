@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import About from "../components/About";
 
 vi.mock("next/image", () => ({
@@ -118,5 +120,16 @@ describe("About", () => {
     const section = document.querySelector("#about");
     const grid = section?.querySelector(".md\\:grid-cols-2");
     expect(grid).toBeInTheDocument();
+  });
+
+  it("Inter font config in app/layout.tsx includes italic style for Much love", () => {
+    const layoutSource = readFileSync(
+      join(process.cwd(), "app", "layout.tsx"),
+      "utf8"
+    );
+    const interBlockMatch = layoutSource.match(/Inter\(\{[\s\S]*?\}\)/);
+    expect(interBlockMatch).not.toBeNull();
+    const interBlock = interBlockMatch?.[0] ?? "";
+    expect(interBlock).toMatch(/style:\s*\[[^\]]*["']italic["'][^\]]*\]/);
   });
 });
