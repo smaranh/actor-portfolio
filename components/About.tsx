@@ -5,7 +5,7 @@ export default function About() {
     <section id="about" className="py-24 px-8 md:px-16 bg-white">
       <h2 className="sr-only">About</h2>
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div className="relative w-full aspect-[3/4]">
+        <div className="relative w-full aspect-[3/4] shadow-[0_8px_30px_rgba(0,0,0,0.08)] ring-1 ring-[#e8e0d4]">
           <Image
             src={`${process.env.NEXT_PUBLIC_BASE_PATH}/images/about.jpg`}
             alt="Smaran Harihar"

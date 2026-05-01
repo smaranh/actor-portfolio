@@ -36,6 +36,16 @@ describe("About", () => {
     expect(img.getAttribute("src")).toContain("about.jpg");
   });
 
+  it("portrait wrapper has shadow, warm border, and preserved aspect ratio", () => {
+    render(<About />);
+    const img = screen.getByAltText("Smaran Harihar");
+    const wrapper = img.parentElement as HTMLElement;
+    expect(wrapper.className).toMatch(/shadow-/);
+    expect(wrapper.className).toMatch(/ring-1|border\b/);
+    expect(wrapper.className).toMatch(/ring-\[#e8e0d4\]|border-\[#e8e0d4\]/);
+    expect(wrapper.className).toMatch(/aspect-\[3\/4\]/);
+  });
+
   it("renders the first bio paragraph", () => {
     render(<About />);
     expect(
