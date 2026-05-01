@@ -9,7 +9,10 @@ const nextConfig: NextConfig = {
     basePath,
     assetPrefix: basePath,
   }),
-  images: { unoptimized: true },
+  images: {
+    unoptimized: true,
+    remotePatterns: [{ protocol: "https", hostname: "i.ytimg.com" }],
+  },
   env: {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
