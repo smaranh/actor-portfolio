@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import FadeInOnScroll from "./FadeInOnScroll";
 
 export default function Hero() {
   const reduce = useReducedMotion();
@@ -27,7 +28,7 @@ export default function Hero() {
         />
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-      <div className="absolute bottom-12 left-8 md:left-16 text-white">
+      <FadeInOnScroll className="absolute bottom-12 left-8 md:left-16 text-white">
         <p
           className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-white/80 mb-3"
           style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}
@@ -47,7 +48,7 @@ export default function Hero() {
         >
           I’m an Actor, Software Engineer and a Dad.
         </p>
-      </div>
+      </FadeInOnScroll>
     </section>
   );
 }
