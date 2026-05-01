@@ -9,7 +9,7 @@ export default function Stats() {
   return (
     <section
       id="stats"
-      className="py-16 px-8 md:px-16 border-t border-b border-gray-100"
+      className="py-16 px-8 md:px-16 border-t border-gray-100"
     >
       <div className="max-w-6xl mx-auto">
         <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-8 text-center">
