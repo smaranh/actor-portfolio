@@ -13,13 +13,13 @@ export default function Hero() {
           className="font-playfair text-4xl md:text-6xl font-semibold mb-3 leading-tight"
           style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}
         >
-          Hey there, I&apos;m Smaran Harihar.
+          Hey there, I’m Smaran Harihar.
         </h1>
         <p
           className="text-lg md:text-2xl font-light"
           style={{ textShadow: "0 2px 6px rgba(0,0,0,0.5)" }}
         >
-          I&apos;m an Actor, Software Engineer and a Dad.
+          I’m an Actor, Software Engineer and a Dad.
         </p>
       </div>
     </section>
