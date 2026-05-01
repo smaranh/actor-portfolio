@@ -152,6 +152,24 @@ describe("ReelsPreview — modal", () => {
     expect(iframe?.getAttribute("src")).toContain("autoplay=1");
   });
 
+  it("iframe src uses youtube-nocookie.com", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
+    const iframe = document.querySelector("iframe");
+    expect(iframe?.getAttribute("src")).toMatch(
+      /^https:\/\/www\.youtube-nocookie\.com\/embed\//
+    );
+  });
+
+  it("iframe src still includes the video id", () => {
+    render(<ReelsPreview />);
+    fireEvent.click(
+      screen.getByText("First Responders Part 1").closest("button")!
+    );
+    const iframe = document.querySelector("iframe");
+    expect(iframe?.getAttribute("src")).toContain("utchWkrauZg");
+  });
+
   it("closes modal on Escape key", () => {
     render(<ReelsPreview />);
     fireEvent.click(screen.getByText("Being Charlie").closest("button")!);
