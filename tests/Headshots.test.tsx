@@ -71,6 +71,44 @@ describe("Headshots", () => {
     expect(screen.getByLabelText("Next headshot")).toBeInTheDocument();
   });
 
+  describe("keyboard navigation (6.4)", () => {
+    it("ArrowRight advances the index", () => {
+      render(<Headshots />);
+      fireEvent.keyDown(window, { key: "ArrowRight" });
+      expect(screen.getByRole("img").getAttribute("src")).toContain(
+        "headshot-2"
+      );
+    });
+
+    it("ArrowLeft wraps backward from index 0 to last", () => {
+      render(<Headshots />);
+      fireEvent.keyDown(window, { key: "ArrowLeft" });
+      expect(screen.getByRole("img").getAttribute("src")).toContain(
+        "headshot-4"
+      );
+    });
+
+    it("ArrowRight wraps forward from last to index 0", () => {
+      render(<Headshots />);
+      const next = screen.getByLabelText("Next headshot");
+      fireEvent.click(next);
+      fireEvent.click(next);
+      fireEvent.click(next);
+      fireEvent.keyDown(window, { key: "ArrowRight" });
+      expect(screen.getByRole("img").getAttribute("src")).toContain(
+        "headshot-1"
+      );
+    });
+
+    it("other keys do not change the index", () => {
+      render(<Headshots />);
+      fireEvent.keyDown(window, { key: "Enter" });
+      expect(screen.getByRole("img").getAttribute("src")).toContain(
+        "headshot-1"
+      );
+    });
+  });
+
   describe("priority loading (6.2)", () => {
     it("first image (index 0) has priority", () => {
       render(<Headshots />);
