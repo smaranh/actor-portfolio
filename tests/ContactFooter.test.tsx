@@ -178,16 +178,81 @@ describe("Footer", () => {
     ).toContain("instagram.com/trappedactor");
   });
 
-  it("renders Twitter link", () => {
+  it("renders Twitter link pointing to x.com", () => {
     render(<Footer />);
     expect(
       screen.getByRole("link", { name: /twitter/i }).getAttribute("href")
-    ).toContain("twitter.com/TrappedActor");
+    ).toContain("x.com/TrappedActor");
   });
 
   it("does not mention Squarespace", () => {
     render(<Footer />);
     expect(screen.queryByText(/squarespace/i)).not.toBeInTheDocument();
+  });
+
+  it("IMDB link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /imdb/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("YouTube link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /youtube/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("Facebook link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /facebook/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("Instagram link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /instagram/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("Twitter link contains an SVG icon, not visible text", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /twitter/i });
+    expect(link.querySelector("svg")).not.toBeNull();
+    expect(link.textContent?.trim()).toBe("");
+  });
+
+  it("social link SVG icons are aria-hidden", () => {
+    render(<Footer />);
+    const platforms = ["imdb", "youtube", "facebook", "instagram", "twitter"];
+    platforms.forEach((name) => {
+      const link = screen.getByRole("link", { name: new RegExp(name, "i") });
+      const svg = link.querySelector("svg");
+      expect(svg?.getAttribute("aria-hidden")).toBe("true");
+    });
+  });
+
+  it("renders a copyright line with the current year and author name", () => {
+    render(<Footer />);
+    const year = new Date().getFullYear();
+    expect(
+      screen.getByText(new RegExp(`© ${year} Smaran Harihar`))
+    ).toBeInTheDocument();
+  });
+
+  it("renders a Back to top link with href #hero", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /back to top/i });
+    expect(link).toHaveAttribute("href", "#hero");
+  });
+
+  it("Back to top link text includes an up-arrow indicator", () => {
+    render(<Footer />);
+    const link = screen.getByRole("link", { name: /back to top/i });
+    expect(link.textContent).toMatch(/↑|↗|⬆/);
   });
 
   it("all social links open in new tab", () => {
