@@ -11,14 +11,14 @@ describe("Hero", () => {
   it("renders the heading", () => {
     render(<Hero />);
     expect(
-      screen.getByText("Hey there, I'm Smaran Harihar.")
+      screen.getByText("Hey there, I’m Smaran Harihar.")
     ).toBeInTheDocument();
   });
 
   it("renders the subheading", () => {
     render(<Hero />);
     expect(
-      screen.getByText("I'm an Actor, Software Engineer and a Dad.")
+      screen.getByText("I’m an Actor, Software Engineer and a Dad.")
     ).toBeInTheDocument();
   });
 
@@ -31,7 +31,7 @@ describe("Hero", () => {
   it("positions text at the bottom-left", () => {
     render(<Hero />);
     const textContainer = screen.getByText(
-      "Hey there, I'm Smaran Harihar."
+      "Hey there, I’m Smaran Harihar."
     ).parentElement;
     expect(textContainer?.className).toMatch(/bottom/);
     expect(textContainer?.className).toMatch(/left/);
