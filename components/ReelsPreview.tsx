@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import FadeInOnScroll from "./FadeInOnScroll";
 
 const videos = [
   { id: "utchWkrauZg", title: "First Responders Part 1" },
@@ -100,19 +101,21 @@ export default function ReelsPreview() {
 
   return (
     <section id="reels" className="py-24 px-8 md:px-16 bg-white">
-      <div className="max-w-6xl mx-auto">
-        <p className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-gray-500 mb-3">
-          Selected Work
-        </p>
-        <h2 className="font-playfair text-4xl font-semibold text-[#222222] mb-12">
-          Reels
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {videos.map((v) => (
-            <ReelTile key={v.id} video={v} onPlay={open} />
-          ))}
+      <FadeInOnScroll>
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-gray-500 mb-3">
+            Selected Work
+          </p>
+          <h2 className="font-playfair text-4xl font-semibold text-[#222222] mb-12">
+            Reels
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {videos.map((v) => (
+              <ReelTile key={v.id} video={v} onPlay={open} />
+            ))}
+          </div>
         </div>
-      </div>
+      </FadeInOnScroll>
 
       {activeId && activeVideo && (
         <div
