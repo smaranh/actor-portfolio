@@ -33,6 +33,9 @@ export default function ReelsPreview() {
   return (
     <section id="reels" className="py-24 px-8 md:px-16 bg-white">
       <div className="max-w-6xl mx-auto">
+        <p className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-gray-500 mb-3">
+          Selected Work
+        </p>
         <h2 className="font-playfair text-4xl font-semibold text-[#222222] mb-12">
           Reels
         </h2>
