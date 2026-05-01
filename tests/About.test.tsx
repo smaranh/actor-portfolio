@@ -16,6 +16,33 @@ vi.mock("next/image", () => ({
   }) => <img src={src} alt={alt} {...props} />,
 }));
 
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      className,
+      initial,
+      whileInView,
+      viewport,
+      transition,
+      ...props
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
+      <div
+        className={className}
+        data-initial={JSON.stringify(initial)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: vi.fn(() => false),
+}));
+
 describe("About", () => {
   it("renders a section with id about", () => {
     render(<About />);
@@ -120,6 +147,22 @@ describe("About", () => {
     const section = document.querySelector("#about");
     const grid = section?.querySelector(".md\\:grid-cols-2");
     expect(grid).toBeInTheDocument();
+  });
+
+  it("wraps the inner grid in FadeInOnScroll, but not the section itself", () => {
+    render(<About />);
+    const section = document.querySelector("#about") as HTMLElement;
+    const heading = screen.getByRole("heading", { level: 2 });
+    const img = screen.getByAltText(/Smaran/);
+
+    const headingFadeAncestor = heading.closest("div[data-whileinview]");
+    const imgFadeAncestor = img.closest("div[data-whileinview]");
+
+    expect(headingFadeAncestor || imgFadeAncestor).not.toBeNull();
+    const fade = (imgFadeAncestor ?? headingFadeAncestor) as HTMLElement;
+    expect(fade.getAttribute("data-whileinview")).toContain('"opacity":1');
+
+    expect(section.getAttribute("data-whileinview")).toBeNull();
   });
 
   it("Inter font config in app/layout.tsx includes italic style for Much love", () => {
