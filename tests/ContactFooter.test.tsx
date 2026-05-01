@@ -3,6 +3,33 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({
+      children,
+      className,
+      initial,
+      whileInView,
+      viewport,
+      transition,
+      ...props
+    }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    any) => (
+      <div
+        className={className}
+        data-initial={JSON.stringify(initial)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
+        data-transition={JSON.stringify(transition)}
+        {...props}
+      >
+        {children}
+      </div>
+    ),
+  },
+  useReducedMotion: () => false,
+}));
+
 describe("Contact", () => {
   it("renders a section with id contact", () => {
     render(<Contact />);
@@ -48,6 +75,16 @@ describe("Contact", () => {
     expect(
       subtext.compareDocumentPosition(link) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
+  });
+
+  it("section content is wrapped in FadeInOnScroll", () => {
+    render(<Contact />);
+    const heading = screen.getByText("For all bookings contact Smaran Harihar");
+    const fadeAncestor = heading.closest("div[data-whileinview]");
+    expect(fadeAncestor).not.toBeNull();
+    expect(fadeAncestor!.getAttribute("data-whileinview")).toContain(
+      '"opacity":1'
+    );
   });
 });
 
