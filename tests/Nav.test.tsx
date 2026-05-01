@@ -83,6 +83,13 @@ describe("Nav — links", () => {
       "#contact"
     );
   });
+
+  it("renders desktop links as block elements for larger hitboxes", () => {
+    render(<Nav />);
+    const link = screen.getByText("About Me").closest("a");
+    expect(link?.className).toMatch(/block/);
+    expect(link?.className).toMatch(/py-1/);
+  });
 });
 
 describe("Nav — scroll state", () => {
@@ -306,6 +313,15 @@ describe("Nav — mobile overlay", () => {
     expect(dialog).toHaveTextContent("Reels");
     expect(dialog).toHaveTextContent("Headshots");
     expect(dialog).toHaveTextContent("Contact");
+  });
+
+  it("renders mobile overlay links as block elements with vertical padding", () => {
+    render(<Nav />);
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    const overlayLinks = screen.getAllByText("About Me");
+    const mobileLink = overlayLinks[overlayLinks.length - 1]; // overlay link is the last one
+    expect(mobileLink.className).toMatch(/block/);
+    expect(mobileLink.className).toMatch(/py-1/);
   });
 });
 
