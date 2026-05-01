@@ -47,6 +47,21 @@ jobs:
         env:
           CI: true
 
+  lighthouse:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - run: npx serve out &
+      - run: npx wait-on http://localhost:3000
+      - run: npx @lhci/cli@0.14.x autorun
+
   deploy:
     needs: [build, e2e]
     runs-on: ubuntu-latest
