@@ -16,6 +16,8 @@ vi.mock("framer-motion", () => ({
       transition,
       initial,
       exit,
+      whileInView,
+      viewport,
       ...props
     }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any) => (
@@ -24,6 +26,8 @@ vi.mock("framer-motion", () => ({
         data-transition={JSON.stringify(transition)}
         data-initial={JSON.stringify(initial)}
         data-exit={JSON.stringify(exit)}
+        data-whileinview={JSON.stringify(whileInView)}
+        data-viewport={JSON.stringify(viewport)}
         {...props}
       >
         {children}
@@ -140,6 +144,18 @@ describe("Headshots", () => {
     });
   });
 
+  describe("entrance fade (6.8)", () => {
+    it("section content is wrapped in FadeInOnScroll", () => {
+      render(<Headshots />);
+      const heading = screen.getByRole("heading", { level: 2 });
+      const fadeAncestor = heading.closest("div[data-whileinview]");
+      expect(fadeAncestor).not.toBeNull();
+      expect(fadeAncestor!.getAttribute("data-whileinview")).toContain(
+        '"opacity":1'
+      );
+    });
+  });
+
   describe("round chevron buttons (6.7 + 6.3)", () => {
     it("prev button contains an SVG with aria-hidden true", () => {
       render(<Headshots />);
@@ -206,7 +222,7 @@ describe("Headshots", () => {
     it("reduced motion: transition duration is 0", () => {
       mockUseReducedMotion.mockReturnValue(true);
       render(<Headshots />);
-      const wrapper = document.querySelector("[data-transition]");
+      const wrapper = document.querySelector("[data-animate]");
       expect(
         JSON.parse(wrapper!.getAttribute("data-transition")!).duration
       ).toBe(0);
