@@ -14,7 +14,6 @@ const headshots = [
 
 export default function Headshots() {
   const [index, setIndex] = useState(0);
-  const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const reduce = useReducedMotion();
 
   const prev = () =>
@@ -74,7 +73,7 @@ export default function Headshots() {
                 className="relative w-full max-w-2xl aspect-[3/4]"
               >
                 <Image
-                  src={`${base}${headshots[index].src}`}
+                  src={headshots[index].src}
                   alt={headshots[index].alt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 672px"
