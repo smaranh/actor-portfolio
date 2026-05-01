@@ -40,6 +40,7 @@ export default function ReelsPreview() {
           {videos.map((v) => (
             <button
               key={v.id}
+              aria-label={`Play ${v.title}`}
               className="group relative w-full text-left focus:outline-none"
               onClick={() => setActiveId(v.id)}
             >
@@ -52,6 +53,7 @@ export default function ReelsPreview() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-14 h-14 rounded-full bg-white/80 flex items-center justify-center group-hover:bg-white transition-colors">
                     <svg
+                      aria-hidden="true"
                       className="w-6 h-6 text-[#222222] ml-1"
                       fill="currentColor"
                       viewBox="0 0 24 24"
