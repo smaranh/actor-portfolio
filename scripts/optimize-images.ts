@@ -9,8 +9,20 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 
 const SRC = "public/images";
-const WIDTHS = [1280, 1920, 2560];
 const FORMATS = ["avif", "webp"] as const;
+
+const VARIANT_RULES: Record<string, number[]> = {
+  default: [1280, 1920, 2560],
+  "headshot-": [640, 1024, 1280],
+  about: [800, 1280, 1920],
+};
+
+export function widthsFor(filename: string): number[] {
+  for (const [prefix, widths] of Object.entries(VARIANT_RULES)) {
+    if (prefix !== "default" && filename.startsWith(prefix)) return widths;
+  }
+  return VARIANT_RULES.default;
+}
 
 async function main() {
   const files = await readdir(SRC);
@@ -25,7 +37,7 @@ async function main() {
 
     for (const fmt of FORMATS) {
       // Create responsive variants
-      for (const w of WIDTHS) {
+      for (const w of widthsFor(file)) {
         const outputPath = path.join(SRC, `${base}-${w}.${fmt}`);
         await sharp(input)
           .resize({ width: w, withoutEnlargement: true })
