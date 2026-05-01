@@ -57,13 +57,9 @@ describe("next.config", () => {
     expect(config).toContain('output: "export"');
   });
 
-  it("sets basePath /actor-portfolio for production", () => {
-    expect(config).toContain('"/actor-portfolio"');
-    expect(config).toContain("basePath");
-  });
-
-  it("sets assetPrefix /actor-portfolio for production", () => {
-    expect(config).toContain("assetPrefix");
+  it("uses custom domain so basePath is not set", () => {
+    expect(config).not.toContain("basePath");
+    expect(config).not.toContain("assetPrefix");
   });
 
   it("gates export config on production env", () => {

@@ -19,7 +19,7 @@ export default function Hero() {
         transition={{ duration: reduce ? 0 : 20, ease: "easeOut" }}
       >
         <Image
-          src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/images/hero.jpg`}
+          src="/images/hero.jpg"
           alt=""
           fill
           priority
