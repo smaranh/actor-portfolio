@@ -21,6 +21,20 @@ describe("Contact", () => {
     const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
     expect(link).toHaveAttribute("href", "mailto:trappedactor@gmail.com");
   });
+
+  it("mailto link uses animated underline gradient background classes", () => {
+    render(<Contact />);
+    const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
+    expect(link.className).toContain("bg-[length:0%_1px]");
+    expect(link.className).toContain("hover:bg-[length:100%_1px]");
+  });
+
+  it("mailto link does not use static underline utility class", () => {
+    render(<Contact />);
+    const link = screen.getByRole("link", { name: /trappedactor@gmail\.com/ });
+    const classes = link.className.split(" ");
+    expect(classes).not.toContain("underline");
+  });
 });
 
 describe("Footer", () => {
