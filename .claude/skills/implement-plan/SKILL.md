@@ -20,6 +20,13 @@ Executes a development plan from a markdown file by creating a hierarchy of Pull
 
 Read `MARKDOWN_FILE` in full. Identify every issue to implement and note which are marked **AFK** (autonomous) vs **HITL** (human in the loop).
 
+### 1a. Ensure GitHub Issues Exist
+
+Check whether the plan already has corresponding GitHub issues (e.g., explicit issue links/numbers in `MARKDOWN_FILE`, or issues on the repo whose titles match the plan's items).
+
+- If issues already exist, proceed to Step 2.
+- If no issues exist, invoke `/to-issues` with `MARKDOWN_FILE` to create them, then proceed to Step 2.
+
 ### 2. Branch from Main
 
 ```bash
@@ -56,11 +63,18 @@ git checkout -b <sub-branch-name>
 
 **4e. Commit** — invoke `/typo-check` to fix typos, generate the commit message, and commit.
 
-**4f. Create sub-PR** targeting the primary branch:
+**4f. Create sub-PR** targeting the primary branch, linked to its GitHub issue.
+
+Include a closing keyword (`Closes #<issue-number>`) in the PR body so GitHub auto-links and auto-closes the issue when the sub-PR is merged. Use the issue number identified in Step 1 / 1a.
 
 ```bash
-gh pr create --title "<issue title>" --base <primary-branch>
+gh pr create \
+  --title "<issue title>" \
+  --base <primary-branch> \
+  --body "Closes #<issue-number>"
 ```
+
+If the issue cannot be auto-closed by the sub-PR (e.g., it spans multiple sub-PRs), use `Refs #<issue-number>` instead so the link is recorded without closing.
 
 **4g. Merge sub-PR** into the primary branch.
 
