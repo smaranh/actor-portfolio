@@ -44,11 +44,11 @@ vi.mock("framer-motion", () => ({
 }));
 
 describe("Nav — links", () => {
-  it("renders site name linking to /#", () => {
+  it("renders site name linking to #hero", () => {
     render(<Nav />);
     expect(screen.getByText("Smaran Harihar").closest("a")).toHaveAttribute(
       "href",
-      "/#"
+      "#hero"
     );
   });
 
@@ -56,7 +56,7 @@ describe("Nav — links", () => {
     render(<Nav />);
     expect(screen.getByText("About Me").closest("a")).toHaveAttribute(
       "href",
-      "/#about"
+      "#about"
     );
   });
 
@@ -64,7 +64,7 @@ describe("Nav — links", () => {
     render(<Nav />);
     expect(screen.getByText("Reels").closest("a")).toHaveAttribute(
       "href",
-      "/#reels"
+      "#reels"
     );
   });
 
@@ -72,7 +72,7 @@ describe("Nav — links", () => {
     render(<Nav />);
     expect(screen.getByText("Headshots").closest("a")).toHaveAttribute(
       "href",
-      "/#headshots"
+      "#headshots"
     );
   });
 
@@ -80,7 +80,7 @@ describe("Nav — links", () => {
     render(<Nav />);
     expect(screen.getByText("Contact").closest("a")).toHaveAttribute(
       "href",
-      "/#contact"
+      "#contact"
     );
   });
 });
