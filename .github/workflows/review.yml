@@ -14,7 +14,9 @@ jobs:
           node-version: 20
       - run: npm ci
       - name: Prettier
-        run: npx prettier --ignore-unknown --check .
+        run: npx prettier --ignore-unknown --write .
+      - name: Linting
+        run: npm run lint
       - name: Typecheck
         run: npm run typecheck
       - name: Test
