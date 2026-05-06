@@ -57,17 +57,17 @@ describe("next.config", () => {
     expect(config).toContain('output: "export"');
   });
 
-  it("sets basePath /actor-portfolio for production", () => {
-    expect(config).toContain('"/actor-portfolio"');
-    expect(config).toContain("basePath");
+  it("has no basePath (root-relative deployment)", () => {
+    expect(config).not.toContain('"/actor-portfolio"');
+    expect(config).not.toContain("basePath");
   });
 
-  it("sets assetPrefix /actor-portfolio for production", () => {
-    expect(config).toContain("assetPrefix");
+  it("has no assetPrefix (root-relative deployment)", () => {
+    expect(config).not.toContain("assetPrefix");
   });
 
-  it("gates export config on production env", () => {
-    expect(config).toContain("isProd");
+  it("sets NEXT_PUBLIC_BASE_PATH to empty string", () => {
+    expect(config).toContain('NEXT_PUBLIC_BASE_PATH: ""');
   });
 
   it("has unoptimized images", () => {
