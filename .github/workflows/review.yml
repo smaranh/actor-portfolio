@@ -38,3 +38,20 @@ jobs:
         run: npm run test:e2e
         env:
           CI: true
+
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - run: npx next start &
+      - run: npx wait-on http://localhost:3000
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --no-progress http://localhost:3000
+        continue-on-error: true
