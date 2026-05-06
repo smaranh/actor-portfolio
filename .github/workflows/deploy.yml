@@ -7,12 +7,10 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -28,9 +26,6 @@ jobs:
       - run: npm run typecheck
       - run: npm run test
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: out
 
   e2e:
     needs: build
@@ -58,7 +53,7 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
-      - run: npx serve out &
+      - run: npx next start &
       - run: npx wait-on http://localhost:3000
       - run: npx @lhci/cli@0.14.x autorun
 
@@ -73,26 +68,9 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run build
+      - run: npx next start &
+      - run: npx wait-on http://localhost:3000
       - uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress out/index.html
+          args: --verbose --no-progress http://localhost:3000
         continue-on-error: true
-
-  deploy:
-    needs: [build, e2e]
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci && npm run build
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: out/
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
