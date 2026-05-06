@@ -53,21 +53,17 @@ describe("CNAME", () => {
 describe("next.config", () => {
   const config = readFileSync(join(root, "next.config.ts"), "utf-8");
 
-  it("enables static export for production", () => {
-    expect(config).toContain('output: "export"');
+  it("has no basePath (root-relative deployment)", () => {
+    expect(config).not.toContain('"/actor-portfolio"');
+    expect(config).not.toContain("basePath");
   });
 
-  it("uses custom domain so basePath is not set", () => {
-    expect(config).not.toContain("basePath");
+  it("has no assetPrefix (root-relative deployment)", () => {
     expect(config).not.toContain("assetPrefix");
   });
 
-  it("gates export config on production env", () => {
-    expect(config).toContain("isProd");
-  });
-
-  it("has unoptimized images", () => {
-    expect(config).toContain("unoptimized: true");
+  it("has no NEXT_PUBLIC_BASE_PATH env var", () => {
+    expect(config).not.toContain("NEXT_PUBLIC_BASE_PATH");
   });
 });
 
