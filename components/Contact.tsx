@@ -23,7 +23,7 @@ export default function Contact() {
           <h2 className="font-playfair text-3xl md:text-4xl font-semibold text-[#222222] mb-4">
             For all bookings contact Smaran Harihar
           </h2>
-          <p className="text-sm text-gray-500 mb-6">Based in Los Angeles</p>
+          <p className="text-sm text-[#4b5563] mb-6">Based in Los Angeles</p>
           <div className="flex flex-col items-center gap-3">
             <a
               href="mailto:trappedactor@gmail.com"
@@ -37,7 +37,7 @@ export default function Contact() {
             <button
               type="button"
               onClick={copyEmail}
-              className="text-xs uppercase tracking-widest text-gray-500 hover:text-[#222222] transition-colors"
+              className="text-xs uppercase tracking-widest text-[#4b5563] hover:text-[#222222] transition-colors"
               aria-live="polite"
             >
               {copied ? "Copied ✓" : "Copy email"}

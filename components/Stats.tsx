@@ -15,13 +15,13 @@ export default function Stats() {
     >
       <FadeInOnScroll>
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-8 text-center">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#4b5563] mb-8 text-center">
             Casting
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 md:divide-x md:divide-gray-100 gap-y-8 md:gap-x-0 text-center">
             {stats.map(({ label, value }) => (
               <div key={label} className="md:px-4">
-                <p className="text-xs uppercase tracking-widest text-gray-600 mb-2">
+                <p className="text-xs uppercase tracking-widest text-[#4b5563] mb-2">
                   {label}
                 </p>
                 <p className="font-playfair text-3xl md:text-4xl font-semibold text-[#222222]">
