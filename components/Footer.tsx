@@ -112,7 +112,7 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-        <div className="flex items-center justify-between text-xs text-gray-400">
+        <div className="flex items-center justify-between text-xs text-gray-500">
           <p>© {new Date().getFullYear()} Smaran Harihar</p>
           <a href="#hero" className="hover:text-[#222222] transition-colors">
             Back to top ↑

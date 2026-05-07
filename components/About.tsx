@@ -11,6 +11,7 @@ export default function About() {
             src="/images/about.jpg"
             alt="Smaran Harihar — portrait, looking off camera, soft natural light"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
         </div>

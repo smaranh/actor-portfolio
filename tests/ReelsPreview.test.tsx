@@ -92,26 +92,27 @@ describe("ReelsPreview — tiles", () => {
 
   it("renders a thumbnail for each video", () => {
     render(<ReelsPreview />);
-    const thumbnails = screen.getAllByRole("img");
+    const thumbnails = document.querySelectorAll("img[src*='ytimg.com']");
     expect(thumbnails.length).toBeGreaterThanOrEqual(4);
-    expect(thumbnails[0].getAttribute("src")).toContain("ytimg.com");
   });
 
-  it("thumbnails use maxresdefault as default src", () => {
+  it("thumbnails use hqdefault as default src", () => {
     render(<ReelsPreview />);
-    const thumbnails = screen.getAllByRole("img");
-    expect(thumbnails[0].getAttribute("src")).toContain("maxresdefault.jpg");
+    const thumbnails = document.querySelectorAll("img[src*='ytimg.com']");
+    expect(thumbnails[0].getAttribute("src")).toContain("hqdefault.jpg");
   });
 
-  it("thumbnail alt matches the video title", () => {
+  it("thumbnail images are decorative (empty alt, role presentation)", () => {
     render(<ReelsPreview />);
-    expect(screen.getByAltText("First Responders Part 1")).toBeInTheDocument();
-    expect(screen.getByAltText("Being Charlie")).toBeInTheDocument();
+    const thumbnails = document.querySelectorAll("img[src*='ytimg.com']");
+    thumbnails.forEach((img) => {
+      expect(img.getAttribute("alt")).toBe("");
+    });
   });
 
   it("thumbnails use Next.js Image component (sizes prop present)", () => {
     render(<ReelsPreview />);
-    const thumbnails = screen.getAllByRole("img");
+    const thumbnails = document.querySelectorAll("img[src*='ytimg.com']");
     expect(thumbnails[0]).toHaveAttribute("sizes");
   });
 
@@ -170,13 +171,13 @@ describe("ReelsPreview — tiles", () => {
 
   it("thumbnail Image has hover scale class", () => {
     render(<ReelsPreview />);
-    const thumbnail = screen.getAllByRole("img")[0];
+    const thumbnail = document.querySelector("img[src*='ytimg.com']")!;
     expect(thumbnail.className).toMatch(/group-hover:scale-/);
   });
 
   it("thumbnail Image has transition class", () => {
     render(<ReelsPreview />);
-    const thumbnail = screen.getAllByRole("img")[0];
+    const thumbnail = document.querySelector("img[src*='ytimg.com']")!;
     expect(thumbnail.className).toMatch(/transition-/);
   });
 });
