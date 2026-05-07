@@ -6,7 +6,7 @@ test.describe("Nav — desktop", () => {
     const home = new HomePage(page);
     await home.goto();
     await expect(home.siteTitle).toBeVisible();
-    await expect(home.siteTitle).toHaveAttribute("href", "/#");
+    await expect(home.siteTitle).toHaveAttribute("href", "#hero");
   });
 
   test("active-section underline appears when a section is in view", async ({

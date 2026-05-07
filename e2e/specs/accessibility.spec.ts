@@ -16,7 +16,9 @@ test.describe("Accessibility — axe-core", () => {
     await home.reelsSection.scrollIntoViewIfNeeded();
     await home.reelCards.first().click();
     await expect(home.reelDialog).toBeVisible();
-    const results = await new AxeBuilder({ page }).analyze();
+    // Exclude the YouTube iframe — its internal player DOM uses aria-label
+    // on a div without a role, which is third-party markup we can't control.
+    const results = await new AxeBuilder({ page }).exclude("iframe").analyze();
     expect(results.violations).toEqual([]);
     await page.keyboard.press("Escape");
     await expect(home.reelDialog).not.toBeVisible();
@@ -42,7 +44,9 @@ test.describe("Accessibility — axe-core", () => {
     await home.goto();
     await home.headshotsSection.scrollIntoViewIfNeeded();
     await home.headshotsNext.click();
+    await expect(home.headshotsIndicator).toContainText("Image 2 of 4");
     await home.headshotsNext.click();
+    await expect(home.headshotsIndicator).toContainText("Image 3 of 4");
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
   });

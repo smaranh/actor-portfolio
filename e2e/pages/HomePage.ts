@@ -99,11 +99,11 @@ export class HomePage {
     return this.headshotsSection.getByRole("img");
   }
   /**
-   * The "1 / 4" indicator text. Returned as the matching paragraph
-   * locator so callers can assert text and visibility.
+   * The carousel position indicator paragraph (aria-live region).
+   * Accessible text comes from the sr-only span: "Image N of 4".
    */
   get headshotsIndicator(): Locator {
-    return this.headshotsSection.getByText(/^\s*\d+\s*\/\s*\d+\s*$/);
+    return this.headshotsSection.locator("p[aria-live]");
   }
 
   // --- Contact ----------------------------------------------------------
