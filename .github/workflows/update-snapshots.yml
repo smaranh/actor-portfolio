@@ -2,6 +2,10 @@ name: Update Playwright Snapshots
 
 on:
   workflow_dispatch:
+  push:
+    branches: [phase-2-e2e-fix]
+    paths:
+      - ".github/workflows/update-snapshots.yml"
 
 jobs:
   update-snapshots:
