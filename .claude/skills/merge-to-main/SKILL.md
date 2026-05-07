@@ -49,8 +49,26 @@ gh pr merge <PR-number> --squash --subject "<subject>" --body "<body>"
 - Find the open PR for the current branch with `gh pr view`.
 - If no PR exists, create one first with `gh pr create`.
 - Write the commit subject and body using the `/typo-check` message format: one-line subject summarizing all changes, then a `### file` section per changed file with bullet points.
-- Pull main locally after merge to sync: `git checkout main && git pull origin main`.
 
-### 6. Confirm
+### 6. Switch to main and sync
 
-Print the merge commit SHA and confirm main is up to date.
+```bash
+git checkout main
+git pull origin main
+```
+
+### 7. Delete the merged branch
+
+Delete the remote branch first, then the local branch:
+
+```bash
+git push origin --delete <branch>
+git branch -D <branch>
+```
+
+- Delete the remote branch with `git push origin --delete <branch>`. If GitHub already auto-deleted it (repo setting), this is a no-op — ignore the error.
+- Use `git branch -D` (force delete) because squash merges aren't tracked by git's safe `-d` check.
+
+### 8. Confirm
+
+Print the merge commit SHA and confirm main is up to date and the branch is gone.

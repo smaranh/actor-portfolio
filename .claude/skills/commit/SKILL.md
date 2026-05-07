@@ -9,7 +9,19 @@ Combines `/setup-pre-commit` and `/typo-check` into one step.
 
 ## Steps
 
-### 1. Ensure pre-commit hooks are set up
+### 1. Check current branch
+
+Run `git branch --show-current`.
+
+If the current branch is `main`, derive a branch name from the staged/unstaged changes (slugified summary, e.g. `fix-implement-plan-closing-keywords`) and create it:
+
+```bash
+git checkout -b <branch-name>
+```
+
+Then continue to step 2.
+
+### 2. Ensure pre-commit hooks are set up
 
 Check whether Husky + lint-staged are already configured:
 
@@ -22,7 +34,7 @@ If **all** are present, skip to step 2.
 
 If **any** are missing, run `/setup-pre-commit` in full before continuing.
 
-### 2. Typo check and commit
+### 3. Typo check and commit
 
 Run `/typo-check` — this will:
 
