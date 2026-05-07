@@ -2,19 +2,30 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { HomePage } from "../pages/HomePage";
 
-test.describe("Accessibility — axe-core", () => {
-  test.beforeEach(async ({ page }) => {
-    // Disable Framer Motion animations so FadeInOnScroll wrappers start at
-    // opacity:1 (initial={false} when reducedMotion). Without this, sections
-    // that are off-screen during an axe scan have opacity:0, which causes
-    // axe to compute blended/transparent text colors and flag false-positive
-    // color-contrast violations on Linux Chromium CI.
-    await page.emulateMedia({ reducedMotion: "reduce" });
-  });
+async function revealAllSections(page: import("@playwright/test").Page) {
+  // Framer Motion's FadeInOnScroll keeps off-screen sections at opacity:0
+  // until whileInView fires. Axe scans the full DOM and computes blended
+  // colors for invisible text, producing false-positive color-contrast
+  // violations. Scrolling through every section triggers whileInView for
+  // each FadeInOnScroll wrapper before the axe analysis runs.
+  for (const id of [
+    "hero",
+    "about",
+    "reels",
+    "headshots",
+    "stats",
+    "contact",
+  ]) {
+    await page.locator(`#${id}`).scrollIntoViewIfNeeded();
+  }
+  await page.locator("#hero").scrollIntoViewIfNeeded();
+}
 
+test.describe("Accessibility — axe-core", () => {
   test("home page initial load has zero violations", async ({ page }) => {
     const home = new HomePage(page);
     await home.goto();
+    await revealAllSections(page);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
   });
@@ -22,6 +33,7 @@ test.describe("Accessibility — axe-core", () => {
   test("reels modal open state has zero violations", async ({ page }) => {
     const home = new HomePage(page);
     await home.goto();
+    await revealAllSections(page);
     await home.reelsSection.scrollIntoViewIfNeeded();
     await home.reelCards.first().click();
     await expect(home.reelDialog).toBeVisible();
@@ -39,6 +51,7 @@ test.describe("Accessibility — axe-core", () => {
     await page.setViewportSize({ width: 375, height: 812 });
     const home = new HomePage(page);
     await home.goto();
+    await revealAllSections(page);
     await home.openMobileMenu();
     await expect(home.mobileOverlay).toBeVisible();
     const results = await new AxeBuilder({ page }).analyze();
@@ -51,6 +64,7 @@ test.describe("Accessibility — axe-core", () => {
   }) => {
     const home = new HomePage(page);
     await home.goto();
+    await revealAllSections(page);
     await home.headshotsSection.scrollIntoViewIfNeeded();
     await home.headshotsNext.click();
     await expect(home.headshotsIndicator).toContainText("Image 2 of 4");
