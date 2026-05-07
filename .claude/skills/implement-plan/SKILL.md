@@ -65,7 +65,9 @@ git checkout -b <sub-branch-name>
 
 **4f. Create sub-PR** targeting the primary branch, linked to its GitHub issue.
 
-Include a closing keyword (`Closes #<issue-number>`) in the PR body so GitHub auto-links and auto-closes the issue when the sub-PR is merged. Use the issue number identified in Step 1 / 1a.
+Include a closing keyword for each issue in the PR body so GitHub auto-links and auto-closes the issue when the sub-PR is merged. Use the issue number identified in Step 1 / 1a.
+
+Each issue **must be on its own line** — GitHub only closes issues when each closing keyword appears on a separate line. Do NOT combine them (`Closes #134, #135` only closes #134).
 
 ```bash
 gh pr create \
@@ -74,7 +76,14 @@ gh pr create \
   --body "Closes #<issue-number>"
 ```
 
-If the issue cannot be auto-closed by the sub-PR (e.g., it spans multiple sub-PRs), use `Refs #<issue-number>` instead so the link is recorded without closing.
+When a sub-PR resolves multiple issues, list each on its own line:
+
+```
+Closes #134
+Closes #135
+```
+
+If the issue cannot be auto-closed by the sub-PR (e.g., it spans multiple sub-PRs), use `Refs #<issue-number>` instead — one per line — so the link is recorded without closing.
 
 **4g. Merge sub-PR** into the primary branch.
 
