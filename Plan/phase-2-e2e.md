@@ -165,7 +165,7 @@ Full list of root causes found:
 
 ## Part-2 — Fix 2 remaining CI failures (PR #157 still red)
 
-**Status: In progress**
+**Status: Complete — 33/33 pass in CI (run 25510015882)**
 
 ### Root causes (diagnosed from CI run 25508279021, 2026-05-07)
 
