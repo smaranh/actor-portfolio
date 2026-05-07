@@ -18,6 +18,16 @@ async function revealAllSections(page: import("@playwright/test").Page) {
   ]) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
   }
+  // Wait for all Framer Motion wrappers to finish their fade-in (opacity:1).
+  // scrollIntoViewIfNeeded triggers whileInView but doesn't wait for the
+  // 0.55s transition to complete — without this wait, axe may still see
+  // partially-transparent elements and compute blended text colors.
+  await page.waitForFunction(() => {
+    const els = document.querySelectorAll<HTMLElement>(
+      "main [style*='opacity']"
+    );
+    return Array.from(els).every((el) => getComputedStyle(el).opacity === "1");
+  });
   await page.locator("#hero").scrollIntoViewIfNeeded();
 }
 
