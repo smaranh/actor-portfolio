@@ -3,6 +3,15 @@ import AxeBuilder from "@axe-core/playwright";
 import { HomePage } from "../pages/HomePage";
 
 test.describe("Accessibility — axe-core", () => {
+  test.beforeEach(async ({ page }) => {
+    // Disable Framer Motion animations so FadeInOnScroll wrappers start at
+    // opacity:1 (initial={false} when reducedMotion). Without this, sections
+    // that are off-screen during an axe scan have opacity:0, which causes
+    // axe to compute blended/transparent text colors and flag false-positive
+    // color-contrast violations on Linux Chromium CI.
+    await page.emulateMedia({ reducedMotion: "reduce" });
+  });
+
   test("home page initial load has zero violations", async ({ page }) => {
     const home = new HomePage(page);
     await home.goto();
