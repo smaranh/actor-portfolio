@@ -404,6 +404,29 @@ describe("Nav — hamburger aria + animation", () => {
   });
 });
 
+describe("Nav — scroll state survives overlay open/close cycle", () => {
+  beforeEach(() => {
+    Object.defineProperty(window, "scrollY", { writable: true, value: 0 });
+  });
+
+  it("returns to transparent after overlay open/close cycle when scrolled back to top", () => {
+    render(<Nav />);
+    // Scroll past threshold → glass nav
+    Object.defineProperty(window, "scrollY", { writable: true, value: 50 });
+    fireEvent.scroll(window);
+    expect(screen.getByRole("navigation").className).toMatch(/backdrop-blur/);
+    // Open then close the overlay
+    fireEvent.click(screen.getByLabelText("Open menu"));
+    fireEvent.click(screen.getByLabelText("Close menu"));
+    // Scroll back to top → nav should return to transparent
+    Object.defineProperty(window, "scrollY", { writable: true, value: 0 });
+    fireEvent.scroll(window);
+    expect(screen.getByRole("navigation").className).not.toMatch(
+      /backdrop-blur/
+    );
+  });
+});
+
 describe("Nav — focus trap + Esc + focus restoration", () => {
   it("focus moves to close button when overlay opens", () => {
     render(<Nav />);

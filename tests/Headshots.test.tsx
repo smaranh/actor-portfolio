@@ -135,6 +135,28 @@ describe("Headshots", () => {
       );
     });
 
+    it("rapid ArrowRight presses (9 presses on 4-item carousel) land on correct index", () => {
+      render(<Headshots />);
+      // 9 presses on 4-item carousel: (0 + 9) % 4 = 1 → headshot-2
+      for (let i = 0; i < 9; i++) {
+        fireEvent.keyDown(window, { key: "ArrowRight" });
+      }
+      expect(screen.getByRole("img").getAttribute("src")).toContain(
+        "headshot-2"
+      );
+    });
+
+    it("rapid ArrowLeft presses (7 presses on 4-item carousel) land on correct index", () => {
+      render(<Headshots />);
+      // 7 presses backward from 0: (0 - 7 + 28) % 4 = 21 % 4 = 1 → headshot-2
+      for (let i = 0; i < 7; i++) {
+        fireEvent.keyDown(window, { key: "ArrowLeft" });
+      }
+      expect(screen.getByRole("img").getAttribute("src")).toContain(
+        "headshot-2"
+      );
+    });
+
     it("other keys do not change the index", () => {
       render(<Headshots />);
       fireEvent.keyDown(window, { key: "Enter" });
