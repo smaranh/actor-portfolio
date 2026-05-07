@@ -47,6 +47,10 @@ test.describe("Accessibility — axe-core", () => {
     await expect(home.headshotsIndicator).toContainText("Image 2 of 4");
     await home.headshotsNext.click();
     await expect(home.headshotsIndicator).toContainText("Image 3 of 4");
+    // Wait for AnimatePresence exit animation to finish — the old slide stays
+    // in the DOM at opacity 0 during the 0.3s transition and can cause axe
+    // flakes under parallel-worker CPU contention.
+    await expect(home.headshotsSection.locator("img")).toHaveCount(1);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
   });

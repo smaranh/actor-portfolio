@@ -83,6 +83,9 @@ test.describe("Phase 2 — Issue 3: hero face cropping on desktop", () => {
     // "snapshot doesn't exist" — which doesn't capture the actual
     // regression we care about (a face-crop change vs. the approved
     // composition).
+    // Disable reduced-motion so Framer Motion's useReducedMotion() returns true,
+    // stopping the 20s Ken Burns scale animation before the snapshot is taken.
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize({ width: 1440, height: 900 });
     const home = new HomePage(page);
     await home.goto();
