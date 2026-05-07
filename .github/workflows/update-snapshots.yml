@@ -1,0 +1,30 @@
+name: Update Playwright Snapshots
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [phase-2-e2e-fix]
+    paths:
+      - ".github/workflows/update-snapshots.yml"
+
+jobs:
+  update-snapshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Update snapshots
+        run: npx playwright test e2e/specs/phase-2-issues.spec.ts --update-snapshots
+        env:
+          CI: true
+      - name: Upload updated snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-snapshots-linux
+          path: e2e/specs/phase-2-issues.spec.ts-snapshots/
+          retention-days: 7

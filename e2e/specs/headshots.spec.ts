@@ -9,7 +9,7 @@ test.describe("Headshots carousel", () => {
 
     await expect(home.headshotsImage).toBeVisible();
     await expect(home.headshotsImage).toHaveAccessibleName(/headshot 1/i);
-    await expect(home.headshotsIndicator).toHaveText("1 / 4");
+    await expect(home.headshotsIndicator).toContainText("Image 1 of 4");
   });
 
   test("Next advances the carousel to the second headshot", async ({
@@ -20,7 +20,7 @@ test.describe("Headshots carousel", () => {
     await home.headshotsSection.scrollIntoViewIfNeeded();
 
     await home.headshotsNext.click();
-    await expect(home.headshotsIndicator).toHaveText("2 / 4");
+    await expect(home.headshotsIndicator).toContainText("Image 2 of 4");
     await expect(home.headshotsImage).toHaveAccessibleName(/headshot 2/i);
   });
 
@@ -30,7 +30,7 @@ test.describe("Headshots carousel", () => {
     await home.headshotsSection.scrollIntoViewIfNeeded();
 
     await home.headshotsPrev.click();
-    await expect(home.headshotsIndicator).toHaveText("4 / 4");
+    await expect(home.headshotsIndicator).toContainText("Image 4 of 4");
     await expect(home.headshotsImage).toHaveAccessibleName(/headshot 4/i);
   });
 

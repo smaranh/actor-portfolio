@@ -21,7 +21,7 @@ function ReelTile({
   onPlay: (id: string, btn: HTMLButtonElement) => void;
 }) {
   const [thumbSrc, setThumbSrc] = useState(
-    `https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`
+    `https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`
   );
 
   return (
@@ -33,13 +33,10 @@ function ReelTile({
       <div className="relative overflow-hidden aspect-video bg-black">
         <Image
           src={thumbSrc}
-          alt={video.title}
+          alt=""
           fill
           sizes="(max-width: 640px) 100vw, 50vw"
           className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
-          onError={() =>
-            setThumbSrc(`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`)
-          }
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-14 h-14 rounded-full bg-white/80 flex items-center justify-center transition-all duration-200 group-hover:scale-110 group-hover:bg-white group-hover:ring-2 group-hover:ring-white/40">
@@ -103,7 +100,7 @@ export default function ReelsPreview() {
     <section id="reels" className="py-24 px-8 md:px-16 bg-white">
       <FadeInOnScroll>
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-gray-500 mb-3">
+          <p className="text-xs md:text-sm tracking-[0.2em] uppercase font-medium text-[#4b5563] mb-3">
             Selected Work
           </p>
           <h2 className="font-playfair text-4xl font-semibold text-[#222222] mb-12">

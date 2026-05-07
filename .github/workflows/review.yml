@@ -24,20 +24,20 @@ jobs:
       - name: Build
         run: npm run build
 
-  # e2e:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 20
-  #         cache: "npm"
-  #     - run: npm ci
-  #     - run: npx playwright install --with-deps chromium
-  #     - name: E2E
-  #       run: npm run test:e2e
-  #       env:
-  #         CI: true
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: E2E
+        run: npm run test:e2e
+        env:
+          CI: true
 
   link-check:
     runs-on: ubuntu-latest
